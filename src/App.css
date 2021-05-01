@@ -10,7 +10,6 @@
     margin-left: 0.5rem;
   }
 }
-
 .body{
   width: 100vw;
 }
@@ -33,6 +32,7 @@
   border-radius: 50%;
   border:5px solid rgb(77, 168, 77);
 }
+
 
 @media only screen and (max-width: 768px) {
   .navbutton-login{

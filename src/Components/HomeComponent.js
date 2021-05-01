@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import {Row,Col,Card,CardBody,CardTitle,Button,CardFooter, Container,Modal, ModalBody, Form, FormGroup,Input, Label,Popover,PopoverBody,PopoverHeader} from 'reactstrap';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import {AiOutlineExclamationCircle} from 'react-icons/ai';
-
+import {States} from '../shared/exampleData';
 import { useQuery } from '@apollo/client';
 
 import {GET_ALL_DONOR} from '../Graphql/queries'
@@ -11,9 +11,16 @@ const RenderCards = ({blood,state}) =>{
    
     // Making graphql query
     const { loading, error, data } = useQuery(GET_ALL_DONOR,{variables: { blood,state },});
-    if (loading) return <p>Loading...</p>;
-    if (error){console.log(error); return <p>An Error Occured</p>};
+    if (loading) return <div className="text-center">Loading...</div>;
+    if (error){console.log(error); return <div className="text-center">An Error Occured</div>};
     console.log(data);
+    if(data.users.length===0){
+        return(
+            <div className="text-center">
+            <h6>No Results Found, Check again later</h6>
+            </div>
+        )
+    }
     return data.users.map((donor)=>{
         return(
             <Card className="shadow designed-card mb-3">
@@ -69,42 +76,58 @@ function Home(props){
     const toggleRequestModal = () => setIsOnBoardingModalOpen(!isOnboardingModalOpen);
     const [popoverOpen,setIsPopoverOpen] = React.useState(false);
 
-    var [bloodSelected,setBloodSelected] = React.useState("Blood Type")
+    var [bloodSelected,setBloodSelected] = React.useState("A+")
     var [isBloodOpen,setBloodOpen] = React.useState(false)
     const toggleBlood = () => setBloodOpen(prevState => !prevState);
 
     var [stateSelected,setStateSelected] = React.useState("State")
     var [isStateOpen,setStateOpen] = React.useState(false)
+    var toggleStateDropdown = ()=> setStateOpen(!isStateOpen);
 
-
-
+    var allBloodGroups = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
+    //var 
     return(
-        <div>
-            <Row className="p-3 center">
-            <Container>
-                <Dropdown isOpen={isBloodOpen} toggle={toggleBlood}>
+        <div className="container-fluid mt-2">
+            <Row>
+            <Col md={2} sm={5}>
+                <FormGroup>
+                    <Label for="bloodGroupDropDown"><h5>Blood Group</h5></Label>
+                    <Dropdown isOpen={isBloodOpen} id="bloodGroupDropDown" toggle={toggleBlood}>
+                            <DropdownToggle caret>
+                                {bloodSelected.length<=1?
+                                bloodSelected :
+                                "All"}
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                {allBloodGroups.map((bloodGroup)=><DropdownItem onClick={()=>setBloodSelected([bloodGroup])}>{bloodGroup}</DropdownItem>)}
+                                <DropdownItem onClick={()=>setBloodSelected(allBloodGroups)}>All</DropdownItem>
+                                
+                            </DropdownMenu>
+                    </Dropdown>
+                </FormGroup>
+            </Col>
+            <Col md={2} sm={5}>
+            <FormGroup>
+                <Label for="stateDropdown"><h5>State</h5></Label>
+                <Dropdown color="success" isOpen={isStateOpen} id="stateDropdown" toggle={toggleStateDropdown}>
                         <DropdownToggle caret>
-                            {bloodSelected}
+                            {stateSelected}
                         </DropdownToggle>
                         <DropdownMenu>
-                            <DropdownItem onClick={()=>setBloodSelected("A+")}>A+</DropdownItem>
-                            <DropdownItem onClick={()=>setBloodSelected("A")}>A-</DropdownItem>
-                            <DropdownItem onClick={()=>setBloodSelected("B+")}>B+</DropdownItem>
-                            <DropdownItem onClick={()=>setBloodSelected("B-")}>B-</DropdownItem>
-                            <DropdownItem onClick={()=>setBloodSelected("AB+")}>AB+</DropdownItem>
-                            <DropdownItem onClick={()=>setBloodSelected("AB-")}>AB-</DropdownItem>
-                            <DropdownItem onClick={()=>setBloodSelected("O+")}>O+</DropdownItem>
-                            <DropdownItem onClick={()=>setBloodSelected("O-")}>O-</DropdownItem>
+                            {
+                                States.map((state)=><DropdownItem onClick={()=>setStateSelected(state.key)}>{state.name}</DropdownItem>)
+                            }
                         </DropdownMenu>
                 </Dropdown>
-            </Container>
+            </FormGroup>
+            </Col>
             </Row>
             <Row className="mt-3">
                 <Col sm={0} md={3}>
                 </Col>
                 <Col sm={12} md={6}>
                     <Container>
-                    <RenderCards blood={[bloodSelected]} state={'TN'} />
+                    <RenderCards blood={bloodSelected} state={stateSelected} />
                     </Container>
                 </Col>
             </Row>
