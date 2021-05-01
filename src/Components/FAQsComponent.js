@@ -8,7 +8,7 @@ const RenderCards = (props) =>{
         console.log(qa)
         return(
             <Container className="pt-5 pb-2">
-                <Card className="shadow designed-card p3" >
+                <Card className="shadow designed-card p3" style={{backgroundColor: '#f8f5f1'}} >
                     
                     <CardBody>
                     <CardTitle className="p3"><h4>{qa.id}. {qa.question}</h4></CardTitle>
