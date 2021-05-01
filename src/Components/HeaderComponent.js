@@ -3,6 +3,7 @@ import {Navbar,NavbarBrand,NavbarToggler,Collapse,Nav,NavItem,NavLink,Container,
 import {AiOutlineLogin,AiOutlineLogout} from 'react-icons/ai';
 import {TiCancel} from 'react-icons/ti';
 import {BiHelpCircle} from 'react-icons/bi';
+import {FcAbout} from 'react-icons/fc'
 
 import {useAuth0} from '@auth0/auth0-react';
 import {Link} from 'react-router-dom';
@@ -25,12 +26,17 @@ function Header(props){
     console.log(user);
     return(
         <div>
-            <Navbar light expand="md" className="navbar one-edge-shadow">
+            <Navbar light expand="md" className="navbar one-edge-shadow" style={{backgroundColor: '#f8f5f1'}}>
                 <Container fluid>
                 <NavbarBrand href="/" className="navbrand"><h2>Plasma Portal</h2></NavbarBrand>
                 <NavbarToggler onClick={toggleNav} />
                 <Collapse isOpen={isNavOpen} navbar>
                     <Nav className="ml-auto" navbar>
+                    <NavItem>
+                            <Link to="/about">
+                            <Button  className="navbutton mr-2" ><FcAbout size="20px" /> About </Button>
+                            </Link>
+                        </NavItem>
                         <NavItem>
                             <Link to="/faq">
                             <Button  className="navbutton mr-2" ><BiHelpCircle size="20px" /> FAQ </Button>
@@ -44,7 +50,7 @@ function Header(props){
                             {
                             isAuthenticated?
                             <Button className="navbutton-login" onClick={() => {logout({ returnTo: window.location.origin })}}><AiOutlineLogout size="20px"/><span >Logout</span></Button>:
-                            <Button className="navbutton-login" onClick={()=>loginWithRedirect()}><AiOutlineLogin size="20px"/><span>Login</span></Button>
+                            <Button className="navbutton-login" onClick={()=>loginWithRedirect()}><AiOutlineLogin size="20px"/><span> Donor SignUp</span></Button>
                             }
                         </NavItem>
                     </Nav>
