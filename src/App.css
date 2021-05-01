@@ -3,6 +3,42 @@
     height: 10vh;
     background-color: #ffffff;
   }
+  .navbutton-login{
+    margin-left:0.5rem;
+  }
+  .navbutton{
+    margin-left: 0.5rem;
+  }
+}
+
+.body{
+  width: 100vw;
+}
+
+.one-edge-shadow {
+  -webkit-box-shadow: 0 8px 10px -6px rgb(121, 121, 121);
+     -moz-box-shadow: 0 8px 10px -6px rgb(121, 121, 121);
+          box-shadow: 0 8px 10px -6px rgb(121, 121, 121);
+}
+
+.designed-card{
+  border-radius:25px;
+}
+.designed-card-img{
+  height:7rem;
+  width:7rem;
+  object-fit: cover;
+  border-radius: 50%;
+  border:5px solid rgb(77, 168, 77);
+}
+
+@media only screen and (max-width: 768px) {
+  .navbutton-login{
+    margin-top:1rem;
+  }
+  .navbutton{
+    margin-top: 1rem;
+  }
 }
 
 .navbrand{
@@ -14,8 +50,19 @@
   border-radius: 25px;
   border: 0;
 }
+.navbutton{
+  background-color:#f05945;
+  border-radius: 25px;
+  border: 0;
+}
 
 .navbutton-login:hover{
+  background-color:#da5240;
+  border-radius: 25px;
+  border: 0;
+}
+
+.navbutton:hover{
   background-color:#da5240;
   border-radius: 25px;
   border: 0;

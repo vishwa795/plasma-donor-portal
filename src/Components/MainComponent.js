@@ -12,7 +12,7 @@ class Main extends Component{
             <React.Fragment>
                 <Header />
                 <Switch location={this.props.location}>
-                    <Route path="/" component={Home} /> {/* Add Modals on /signup endpoint */}
+                    <Route path="/:page?" component={(props)=><Home {...props} />} />
                     <Redirect to="/" />
                 </Switch>
             </React.Fragment>
