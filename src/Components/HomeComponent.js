@@ -48,13 +48,16 @@ const RenderCards = (props) =>{
 }
 
 
+
+
+
 function Home(props){
     const {page} = props.match.params;
     const [isOnboardingModalOpen,setIsOnBoardingModalOpen] = React.useState(page==="onboarding"?true:false);
     const [isRequsetModalOpen,setIsRequestModalOpen] = React.useState(page==="request"?true:false);
-    const toggleRequestModal = () => setIsRequestModalOpen(!isRequsetModalOpen);
+    const toggleRequestModal = () => setIsOnBoardingModalOpen(!isOnboardingModalOpen);
     const [popoverOpen,setIsPopoverOpen] = React.useState(false);
-    console.log('Modal need to be open ', isRequsetModalOpen);
+    console.log('Modal need to be open ', isOnboardingModalOpen);
     return(
         <div>
             <Row className="mt-3">
@@ -89,7 +92,7 @@ function Home(props){
                                 </Col>
                                 <Col className="mt-2" sm={12} md={4}>
                                     <div className="text-center">
-                                        <Button onClick={toggleRequestModal} color="warning">Request Plasma</Button>
+                                        <Button  color="warning">Request Plasma</Button>
                                     </div>
                                 </Col>
                             </Row>
@@ -104,7 +107,7 @@ function Home(props){
                 </Col>
             </Row>
             <div>
-                <Modal isOpen={isRequsetModalOpen} toggle={toggleRequestModal} >
+                <Modal isOpen={isOnboardingModalOpen} toggle={toggleRequestModal} >
                     <ModalBody>
                         <div className="text-center text-danger">
                             <h3>We Require more Details</h3>
