@@ -1,5 +1,5 @@
 import React from 'react';
-import {Row,Col,Card,CardBody,CardTitle,Button,CardFooter, Container} from 'reactstrap';
+import {Row,Col,Card,CardBody,CardTitle,Button,CardFooter, Container,Modal, ModalBody, Form, FormGroup,Input, Label} from 'reactstrap';
 
 
 const RenderCards = (props) =>{
@@ -49,6 +49,10 @@ const RenderCards = (props) =>{
 
 
 function Home(props){
+    const {page} = props.match.params;
+    const [isOnboardingModalOpen,setIsOnBoardingModalOpen] = React.useState(page==="onboarding"?true:false);
+    const toggleOnboardingModal = () => setIsOnBoardingModalOpen(!isOnboardingModalOpen);
+    console.log('Modal need to be open ', isOnboardingModalOpen);
     return(
         <div>
             <Row className="mt-3">
@@ -97,6 +101,21 @@ function Home(props){
                     </Container>
                 </Col>
             </Row>
+            <div>
+                <Modal isOpen={isOnboardingModalOpen} toggle={toggleOnboardingModal} >
+                    <ModalBody>
+                        <div className="text-center text-primary">
+                            <h3>We Require more Details</h3>
+                        </div>
+                        <Form className="mt-3">
+                          <FormGroup>
+                              <Label for="phone"><h5>Phone Number</h5></Label>
+                              <Input type="text" name="phone" id="phone" />
+                          </FormGroup>
+                        </Form>
+                    </ModalBody>
+                </Modal>
+            </div>
         </div>
     )
 }
