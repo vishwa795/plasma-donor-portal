@@ -37,7 +37,8 @@ function Header(props){
                             </Link>
                         </NavItem>
                         <NavItem>
-                            <Button className="navbutton mr-2" ><TiCancel size="20px" />Deactivate</Button>
+                            
+                            { isAuthenticated && <Button className="navbutton mr-2" ><TiCancel size="20px" />Deactivate</Button>}
                         </NavItem>
                         <NavItem>
                             {
