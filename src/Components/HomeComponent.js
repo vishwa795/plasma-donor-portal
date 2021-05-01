@@ -1,33 +1,44 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Row,Col,Card,CardBody,CardTitle,Button,CardFooter, Container,Modal, ModalBody, Form, FormGroup,Input, Label,Popover,PopoverBody,PopoverHeader} from 'reactstrap';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import {AiOutlineExclamationCircle} from 'react-icons/ai';
 
-const RenderCards = (props) =>{
-    return props.DonorData.map((donor)=>{
+import { useQuery } from '@apollo/client';
+
+import {GET_ALL_DONOR} from '../Graphql/queries'
+
+const RenderCards = (blood,state) =>{
+   
+    // Making graphql query
+    const { loading, error, data } = useQuery(GET_ALL_DONOR,{variables: { blood,state },});
+    if (loading) return <p>Loading...</p>;
+    if (error){console.log(error); return <p>An Error Occured</p>};
+
+    return data.users.map((donor)=>{
         return(
             <Card className="shadow designed-card">
                         <CardBody>
                             <Row>
                                 <Col sm={12} md={4}>
                                     <div className="text-center">
-                                    <img className="img-fluid designed-card-img" src="./logo512.png" alt="Profile Picture" />
+                                    <img className="img-fluid designed-card-img" src={donor.picture} alt="Profile Picture" />
                                     </div>
                                 </Col>
                                 <Col sm={8} md={4} className="border-right">
                                         <div>
-                                        <h4 className="text-success">Vishwa Vignesh</h4>
+                                            <h4 className="text-success">{donor.name}</h4>
                                         </div>
                                         <div>
-                                            <h5>Blood Group:<span className="text-danger">{' '}AB+</span></h5>
+                                            <h5>Blood Group:<span className="text-danger">{donor.blood_group}</span></h5>
                                         </div>
                                 </Col>
                                 <Col sm={8} md={4}>
                                         <div>
-                                        <h4>State:{' '}<span className="text-success">Karnataka</span></h4>
+                                        <h4>State:{' '}<span className="text-success">{donor.state}</span></h4>
                                         </div>
                                         <div>
-                                            <h5>City:<span className="text-danger">{' '}Bengaluru</span></h5>
-                                            <h5>Pincode:<span className="text-primary">{' '}560058</span></h5>
+                                            <h5>City:<span className="text-danger">{' '}{donor.district}</span></h5>
+                                            <h5>Pincode:<span className="text-primary">{' '}{donor.pin_code}</span></h5>
                                         </div>
                                 </Col>
                                 <Col className="mt-2" sm={12} md={4}>
@@ -39,7 +50,7 @@ const RenderCards = (props) =>{
                         </CardBody>
                         <CardFooter>
                             <div className="text-center text-muted">
-                                Posted on: 24th April 2021
+                                Recovered/Vaccinated on: {donor.recovered_on}
                             </div>
                         </CardFooter>
                     </Card>
@@ -58,51 +69,53 @@ function Home(props){
     const toggleRequestModal = () => setIsOnBoardingModalOpen(!isOnboardingModalOpen);
     const [popoverOpen,setIsPopoverOpen] = React.useState(false);
     console.log('Modal need to be open ', isOnboardingModalOpen);
+
+    var [resultCards,setResultCards] = React.useState(null)
+
+    var [bloodSelected,setBloodSelected] = React.useState("Blood Type")
+    var [isBloodOpen,setBloodOpen] = React.useState(false)
+    const toggleBlood = () => setBloodOpen(prevState => !prevState);
+
+    var [stateSelected,setStateSelected] = React.useState("State")
+    var [isStateOpen,setStateOpen] = React.useState(false)
+
+    var [filters,setFilters] = React.useState(null)
+
+    var filterOptions = <Container>
+    <Dropdown isOpen={isBloodOpen} toggle={toggleBlood}>
+            <DropdownToggle caret>
+                {bloodSelected}
+            </DropdownToggle>
+            <DropdownMenu>
+                <DropdownItem onClick={setBloodSelected("A+")}>A+</DropdownItem>
+                <DropdownItem onClick={setBloodSelected("A")}>A-</DropdownItem>
+                <DropdownItem onClick={setBloodSelected("B+")}>B+</DropdownItem>
+                <DropdownItem onClick={setBloodSelected("B-")}>B-</DropdownItem>
+                <DropdownItem onClick={setBloodSelected("AB+")}>AB+</DropdownItem>
+                <DropdownItem onClick={setBloodSelected("AB-")}>AB-</DropdownItem>
+                <DropdownItem onClick={setBloodSelected("O+")}>O+</DropdownItem>
+                <DropdownItem onClick={setBloodSelected("O-")}>O-</DropdownItem>
+            </DropdownMenu>
+        </Dropdown>
+    </Container>
+    
+    setFilters(filterOptions)
+
+    useEffect(()=>{
+        setResultCards(RenderCards([bloodSelected],stateSelected))
+    },[bloodSelected,stateSelected])
+
     return(
         <div>
+            <Row className="p-3 center">
+            {filters}
+            </Row>
             <Row className="mt-3">
                 <Col sm={0} md={3}>
                 </Col>
                 <Col sm={12} md={6}>
                     <Container>
-                    <Card className="shadow designed-card">
-                        <CardBody>
-                            <Row>
-                                <Col sm={12} md={4}>
-                                    <div className="text-center">
-                                    <img className="img-fluid designed-card-img" src="./logo512.png" alt="Profile Picture" />
-                                    </div>
-                                </Col>
-                                <Col sm={8} md={4} className="border-right">
-                                        <div>
-                                        <h4 className="text-success">Vishwa Vignesh</h4>
-                                        </div>
-                                        <div>
-                                            <h5>Blood Group:<span className="text-danger">{' '}AB+</span></h5>
-                                        </div>
-                                </Col>
-                                <Col sm={8} md={4}>
-                                        <div>
-                                        <h4>State:{' '}<span className="text-success">Karnataka</span></h4>
-                                        </div>
-                                        <div>
-                                            <h5>City:<span className="text-danger">{' '}Bengaluru</span></h5>
-                                            <h5>Pincode:<span className="text-primary">{' '}560058</span></h5>
-                                        </div>
-                                </Col>
-                                <Col className="mt-2" sm={12} md={4}>
-                                    <div className="text-center">
-                                        <Button  color="warning">Request Plasma</Button>
-                                    </div>
-                                </Col>
-                            </Row>
-                        </CardBody>
-                        <CardFooter>
-                            <div className="text-center text-muted">
-                                Posted on: 24th April 2021
-                            </div>
-                        </CardFooter>
-                    </Card>
+                    {resultCards}
                     </Container>
                 </Col>
             </Row>
