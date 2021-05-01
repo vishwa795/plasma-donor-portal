@@ -7,16 +7,16 @@ import { useQuery } from '@apollo/client';
 
 import {GET_ALL_DONOR} from '../Graphql/queries'
 
-const RenderCards = (blood,state) =>{
+const RenderCards = ({blood,state}) =>{
    
     // Making graphql query
     const { loading, error, data } = useQuery(GET_ALL_DONOR,{variables: { blood,state },});
     if (loading) return <p>Loading...</p>;
     if (error){console.log(error); return <p>An Error Occured</p>};
-
+    console.log(data);
     return data.users.map((donor)=>{
         return(
-            <Card className="shadow designed-card">
+            <Card className="shadow designed-card mb-3">
                         <CardBody>
                             <Row>
                                 <Col sm={12} md={4}>
@@ -68,9 +68,6 @@ function Home(props){
     const [isRequsetModalOpen,setIsRequestModalOpen] = React.useState(page==="request"?true:false);
     const toggleRequestModal = () => setIsOnBoardingModalOpen(!isOnboardingModalOpen);
     const [popoverOpen,setIsPopoverOpen] = React.useState(false);
-    console.log('Modal need to be open ', isOnboardingModalOpen);
-
-    var [resultCards,setResultCards] = React.useState(null)
 
     var [bloodSelected,setBloodSelected] = React.useState("Blood Type")
     var [isBloodOpen,setBloodOpen] = React.useState(false)
@@ -79,43 +76,35 @@ function Home(props){
     var [stateSelected,setStateSelected] = React.useState("State")
     var [isStateOpen,setStateOpen] = React.useState(false)
 
-    var [filters,setFilters] = React.useState(null)
 
-    var filterOptions = <Container>
-    <Dropdown isOpen={isBloodOpen} toggle={toggleBlood}>
-            <DropdownToggle caret>
-                {bloodSelected}
-            </DropdownToggle>
-            <DropdownMenu>
-                <DropdownItem onClick={setBloodSelected("A+")}>A+</DropdownItem>
-                <DropdownItem onClick={setBloodSelected("A")}>A-</DropdownItem>
-                <DropdownItem onClick={setBloodSelected("B+")}>B+</DropdownItem>
-                <DropdownItem onClick={setBloodSelected("B-")}>B-</DropdownItem>
-                <DropdownItem onClick={setBloodSelected("AB+")}>AB+</DropdownItem>
-                <DropdownItem onClick={setBloodSelected("AB-")}>AB-</DropdownItem>
-                <DropdownItem onClick={setBloodSelected("O+")}>O+</DropdownItem>
-                <DropdownItem onClick={setBloodSelected("O-")}>O-</DropdownItem>
-            </DropdownMenu>
-        </Dropdown>
-    </Container>
-    
-    setFilters(filterOptions)
-
-    useEffect(()=>{
-        setResultCards(RenderCards([bloodSelected],stateSelected))
-    },[bloodSelected,stateSelected])
 
     return(
         <div>
             <Row className="p-3 center">
-            {filters}
+            <Container>
+                <Dropdown isOpen={isBloodOpen} toggle={toggleBlood}>
+                        <DropdownToggle caret>
+                            {bloodSelected}
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            <DropdownItem onClick={()=>setBloodSelected("A+")}>A+</DropdownItem>
+                            <DropdownItem onClick={()=>setBloodSelected("A")}>A-</DropdownItem>
+                            <DropdownItem onClick={()=>setBloodSelected("B+")}>B+</DropdownItem>
+                            <DropdownItem onClick={()=>setBloodSelected("B-")}>B-</DropdownItem>
+                            <DropdownItem onClick={()=>setBloodSelected("AB+")}>AB+</DropdownItem>
+                            <DropdownItem onClick={()=>setBloodSelected("AB-")}>AB-</DropdownItem>
+                            <DropdownItem onClick={()=>setBloodSelected("O+")}>O+</DropdownItem>
+                            <DropdownItem onClick={()=>setBloodSelected("O-")}>O-</DropdownItem>
+                        </DropdownMenu>
+                </Dropdown>
+            </Container>
             </Row>
             <Row className="mt-3">
                 <Col sm={0} md={3}>
                 </Col>
                 <Col sm={12} md={6}>
                     <Container>
-                    {resultCards}
+                    <RenderCards blood={[bloodSelected]} state={'TN'} />
                     </Container>
                 </Col>
             </Row>
