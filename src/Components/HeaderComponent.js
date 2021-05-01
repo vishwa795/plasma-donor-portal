@@ -2,7 +2,11 @@ import React,{useEffect} from 'react';
 import {Navbar,NavbarBrand,NavbarToggler,Collapse,Nav,NavItem,NavLink,Container,Button,Modal,ModalBody,Row,Col} from 'reactstrap';
 import {AiOutlineLogin,AiOutlineLogout} from 'react-icons/ai';
 import {TiCancel} from 'react-icons/ti';
+import {BiHelpCircle} from 'react-icons/bi';
+
 import {useAuth0} from '@auth0/auth0-react';
+import {Link} from 'react-router-dom';
+
 function Header(props){
     const [isNavOpen,setIsNavOpen] = React.useState(false);
     const toggleNav = () => setIsNavOpen(!isNavOpen);
@@ -27,6 +31,11 @@ function Header(props){
                 <NavbarToggler onClick={toggleNav} />
                 <Collapse isOpen={isNavOpen} navbar>
                     <Nav className="ml-auto" navbar>
+                        <NavItem>
+                            <Link to="/faq">
+                            <Button  className="navbutton mr-2" ><BiHelpCircle size="20px" /> FAQ </Button>
+                            </Link>
+                        </NavItem>
                         <NavItem>
                             <Button className="navbutton mr-2" ><TiCancel size="20px" />Deactivate</Button>
                         </NavItem>
