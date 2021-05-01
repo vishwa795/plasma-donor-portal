@@ -1,6 +1,6 @@
 import React from 'react';
-import {Row,Col,Card,CardBody,CardTitle,Button,CardFooter, Container,Modal, ModalBody, Form, FormGroup,Input, Label} from 'reactstrap';
-
+import {Row,Col,Card,CardBody,CardTitle,Button,CardFooter, Container,Modal, ModalBody, Form, FormGroup,Input, Label,Popover,PopoverBody,PopoverHeader} from 'reactstrap';
+import {AiOutlineExclamationCircle} from 'react-icons/ai';
 
 const RenderCards = (props) =>{
     return props.DonorData.map((donor)=>{
@@ -52,6 +52,7 @@ function Home(props){
     const {page} = props.match.params;
     const [isOnboardingModalOpen,setIsOnBoardingModalOpen] = React.useState(page==="onboarding"?true:false);
     const toggleOnboardingModal = () => setIsOnBoardingModalOpen(!isOnboardingModalOpen);
+    const [popoverOpen,setIsPopoverOpen] = React.useState(false);
     console.log('Modal need to be open ', isOnboardingModalOpen);
     return(
         <div>
@@ -104,14 +105,53 @@ function Home(props){
             <div>
                 <Modal isOpen={isOnboardingModalOpen} toggle={toggleOnboardingModal} >
                     <ModalBody>
-                        <div className="text-center text-primary">
+                        <div className="text-center text-danger">
                             <h3>We Require more Details</h3>
                         </div>
-                        <Form className="mt-3">
-                          <FormGroup>
-                              <Label for="phone"><h5>Phone Number</h5></Label>
-                              <Input type="text" name="phone" id="phone" />
-                          </FormGroup>
+                        <Form className="mt-5">
+                            <FormGroup>
+                                <Row>
+                                    <Col md={6} sm={12} className="">
+                                        <Label className="text-warning" for="phone"><h5>Phone Number</h5></Label>
+                                        <Input type="text" name="phone" id="phone" />
+                                    </Col>
+                                    <Col md={6} sm={12}>
+                                    <Label className="text-warning" for="bloodGroup"><h5>Blood Group</h5></Label>
+                                        <Input type="select" name="bloodGroup" id="bloodGroup">
+                                            <option value="a+">A+</option>
+                                            <option value="a-">A-</option>
+                                            <option value="b+">B+</option>
+                                            <option value="b-">B-</option>
+                                            <option value="ab+">AB+</option>
+                                            <option value="ab-">AB-</option>
+                                            <option value="o+">O+</option>
+                                            <option value="o-">O-</option>
+                                        </Input>
+                                    </Col>
+                                </Row>
+                            </FormGroup>
+                            <Row>
+                                <Col sm={12} md={4}>
+                                    <FormGroup>
+                                        <Label className="text-warning" for="phone"><h5>Pincode</h5></Label>
+                                        <Input type="text" name="phone" id="phone" />
+                                    </FormGroup>
+                                </Col>
+                                <Col sm={12} md={8}>
+                                    <FormGroup>
+                                        <Label className="text-warning" for="recoveredDate"><h5>Recovered / Vaccinated On <AiOutlineExclamationCircle size="20px" id="Popover1" onMouseOver={()=>setIsPopoverOpen(true)} onMouseLeave={()=>setIsPopoverOpen(false)} /></h5></Label>
+                                        <Input type="date" name="recoveryDate" id="recoveryDate" />
+                                        <Popover placement="bottom" isOpen={popoverOpen} target="Popover1">
+                                            <PopoverHeader>Vaccination</PopoverHeader>
+                                            <PopoverBody>Please Enter the date on which you got 2nd dose of covid vaccine.</PopoverBody>
+                                        </Popover>
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <div className="text-center">
+                                <p className="text-light"><AiOutlineExclamationCircle size="20px" />{' '}We will use these details only for filtering your profile for plasma requester</p>
+                                <Button type="submit" size="lg" color="warning">Submit Details</Button>
+                            </div>
                         </Form>
                     </ModalBody>
                 </Modal>

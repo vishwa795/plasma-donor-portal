@@ -22,7 +22,7 @@ function Header(props){
           .then(response=>localStorage.setItem("accessToken",response))
           .catch(error=>console.log(error.message));
     })
-    localStorage.setItem("user",user);
+    console.log(user);
     return(
         <div>
             <Navbar light expand="md" className="navbar one-edge-shadow">

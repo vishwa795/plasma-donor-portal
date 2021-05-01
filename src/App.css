@@ -20,7 +20,9 @@
      -moz-box-shadow: 0 8px 10px -6px rgb(121, 121, 121);
           box-shadow: 0 8px 10px -6px rgb(121, 121, 121);
 }
-
+.modal-content{
+  background-color: #212121d9;
+}
 .designed-card{
   border-radius:25px;
 }
