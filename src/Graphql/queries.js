@@ -1,6 +1,9 @@
+import { gql } from '@apollo/client';
+
+
 /* Queries */
 
-const CHECK_USER_STATUS = `query CheckUserStatus($user_id: String = "") {
+export const CHECK_USER_STATUS = gql`query CheckUserStatus($user_id: String = "") {
     users(where: {user_id: {_eq: $user_id}}, limit: 1) {
       status
       user_id
@@ -8,7 +11,7 @@ const CHECK_USER_STATUS = `query CheckUserStatus($user_id: String = "") {
     }
   }`
 
-const GET_ALL_DONOR = `query FetchAllDonors($blood: [String!] = "", $state: String = "") {
+export const GET_ALL_DONOR = gql`query FetchAllDonors($blood: [String!] = "", $state: String = "") {
     users(where: {status: {_eq: "true"}, blood_group: {_in: $blood}, state: {_eq: $state}}) {
       state
       pin_code
@@ -17,6 +20,8 @@ const GET_ALL_DONOR = `query FetchAllDonors($blood: [String!] = "", $state: Stri
       id
       district
       blood_group
+      recovered_on
+      updated_at
     }
   }`
 
@@ -24,7 +29,7 @@ const GET_ALL_DONOR = `query FetchAllDonors($blood: [String!] = "", $state: Stri
 
 /* Mutations */
 
-const DEACTIVATE_USER = `mutation DeactivateUser($user_id: String = "") {
+export const DEACTIVATE_USER = gql`mutation DeactivateUser($user_id: String = "") {
     update_users(where: {user_id: {_eq: $user_id}}, _set: {status: "false"}) {
       affected_rows
     }
