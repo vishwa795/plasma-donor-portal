@@ -10,21 +10,19 @@ import {useAuth0} from '@auth0/auth0-react';
 import {Link} from 'react-router-dom';
 
 function GetUserDetail(props){
-    const userID = localStorage.getItem("user-id");
-    console.log(userID)
-        const { loading, error, data } = useQuery(GET_USER_DETAILS,{variables: { userID },});
+    const auth0Id = localStorage.getItem("user-id");
+    console.log(auth0Id)
+        const { loading, error, data } = useQuery(GET_USER_DETAILS,{variables: { auth0Id },});
         if(error){
         }
         else if(data){
             console.log(data,"is the data");
             localStorage.setItem('user',data);
         }
-        return(
-            <div />
-        )
 }
 
 function Header(props){
+    GetUserDetail();
     const [isNavOpen,setIsNavOpen] = React.useState(false);
     const toggleNav = () => setIsNavOpen(!isNavOpen);
     const domain = process.env.REACT_APP_AUTH0_DOMAIN;
@@ -33,7 +31,6 @@ function Header(props){
     const {isAuthenticated,loginWithRedirect,user,getAccessTokenSilently,logout} = useAuth0();
     if(user)
     localStorage.setItem('user-id',user.sub)
-
     useEffect(() => {
         (async () => {
             //console.log('I am here')
@@ -51,7 +48,6 @@ function Header(props){
     
     return(
         <div>
-            <GetUserDetail />
             <Navbar light expand="md" className="navbar one-edge-shadow" >
                 <Container fluid>
                 <NavbarBrand href="/" className="navbrand"><h2>Plasma Portal</h2></NavbarBrand>

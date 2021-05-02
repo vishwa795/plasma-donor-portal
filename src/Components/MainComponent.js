@@ -20,7 +20,6 @@ const httpLink = createHttpLink({
   const authLink = setContext((_, { headers }) => {
     // get the authentication token from local storage if it exists
     const token = localStorage.getItem('accessToken');
-    console.log(token);
     // return the headers to the context so httpLink can read them
     return {
       headers: {
@@ -45,15 +44,21 @@ class Main extends Component{
       
     constructor(props){
         super(props);
+        this.state={
+            user:null
+        }
     }
+    setUserInfo = (userInfo) => this.setState({user:userInfo});
     componentDidMount(){
         
     }
     render(){
+        const {isAuthenticated} = this.props.auth0;
+        console.log("Authenticated?",isAuthenticated);
         return(
             <React.Fragment>
-                <Header />
                 <ApolloProvider client={isAuthenticated?authdClient:unauthdClient}>
+                <Header setUserInfo={this.setUserInfo} />
                 <Switch location={this.props.location}>
                     <Route path="/about" exact component={(props)=><About {...props} />} />
                     <Route path="/faq" exact component={(props)=><FAQs {...props} />} />

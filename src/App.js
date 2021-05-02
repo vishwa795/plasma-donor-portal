@@ -10,7 +10,7 @@ function App() {
 
   const [result, setResult] = useState(null)
 
-  //pincodeVerification(73510, setResult)
+  //pincodeVerification(560093, setResult)
   const domain = process.env.REACT_APP_AUTH0_DOMAIN;
   const clientID = process.env.REACT_APP_AUTH0_CLIENT_ID;
   return (
@@ -21,6 +21,7 @@ function App() {
       audience={`https://${domain}/api/v2/`}
       scope="read:current_user update:current_user_metadata"
       redirectUri={window.location.origin}
+      useRefreshTokens={true}
       >
         <div className="App">
           <Main />
