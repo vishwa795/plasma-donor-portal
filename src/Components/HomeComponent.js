@@ -205,17 +205,13 @@ function Home(props){
                     </ModalBody>
                 </Modal>
             </div>
-            <div>
-            <br />
-            <br />
-            <Col >
-            <Toast className="text-center" isOpen={showToast}>
-                <ToastHeader toggle={toggleToast}>Register as a donor</ToastHeader>
-                <ToastBody>
-                            Please register on plasma portal india as a donor by pressing the Login button at the top of the page.For understanding more about being a donor check out our FAQ section.
-                </ToastBody>
-            </Toast>
-            </Col>
+            <div className="toast-notification">
+                <Toast className="text-center" isOpen={showToast}>
+                    <ToastHeader toggle={toggleToast}>Register as a donor</ToastHeader>
+                    <ToastBody>
+                                Please register on plasma portal india as a donor by pressing the Login button at the top of the page.For understanding more about being a donor check out our FAQ section.
+                    </ToastBody>
+                </Toast>
             </div>
         </div>
     )
