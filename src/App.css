@@ -9,10 +9,17 @@
   .navbutton{
     margin-left: 0.5rem;
   }
+  .toast-notification{
+    position: fixed;
+    bottom:8vh;
+    top:auto;
+    right:10px;
+  }
 }
 .body{
   width: 100vw;
 }
+
 
 .one-edge-shadow {
   -webkit-box-shadow: 0 8px 10px -6px rgb(121, 121, 121);
@@ -40,6 +47,13 @@
   }
   .navbutton{
     margin-top: 1rem;
+  }
+  .toast-notification{
+    position: fixed;
+    bottom:8vh;
+    top:auto;
+    right:auto;
+    left:auto
   }
 }
 
