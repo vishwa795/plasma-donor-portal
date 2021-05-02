@@ -1,6 +1,7 @@
 import React from 'react';
 import {Row,Col,Card,CardBody,CardTitle,Button,CardFooter, Container,Modal, ModalBody, Form, FormGroup,Input, Label} from 'reactstrap';
 import img from '../shared/img.png'
+import {AiOutlineGithub} from 'react-icons/ai'
 import {AiOutlineInstagram} from 'react-icons/ai'
 import {AiOutlineFacebook} from 'react-icons/ai'
 import {SiGmail} from 'react-icons/si'
@@ -67,6 +68,31 @@ const renderAbout = (props) => {
                                                     </li>
                                                     <li>
                                                         <SiGmail size="25px" />    covid19india.contact@gmail.com
+                                                    </li>
+                                                </ul>
+                                        </h6>
+                                    </div>
+                                </div>
+                        </Col>
+                        
+                    </Row>
+                </CardBody>              
+            </Card>
+
+            <Card className="shadow designed-card p5 mb-5" style={{backgroundColor: '#f8f5f1'}}>  
+                <CardBody>
+                <CardTitle className="p3"><h4>Repositories:</h4></CardTitle>
+                    <Row>
+                        <Col >
+                                <div>
+                                    <div className="p1">
+                                        <h6>
+                                                <ul>
+                                                    <li>
+                                                        <AiOutlineGithub size="30px" />    <a href='https://github.com/vishwa795/plasma-donor-portal'>Frontend repo</a>
+                                                    </li>
+                                                    <li>
+                                                        <AiOutlineGithub size="30px" />     <a href='https://github.com/roy-a2yush/Covid'>Backend repo</a>
                                                     </li>
                                                 </ul>
                                         </h6>
