@@ -26,7 +26,7 @@ const RenderCards = ({blood,state,toggleRequestModal,setRequestModalDonor}) =>{
     }
     return data.users.map((donor)=>{
         return(
-            <Card className="shadow designed-card mb-3">
+            <Card className="shadow designed-card mb-3" key={donor.id}>
                         <CardBody>
                             <Row>
                                 <Col sm={12} md={4}>
@@ -88,7 +88,8 @@ function Home(props){
         picture:'./logo512.png',
         name:'Covid Plasma',
         district:'Bengaluru',
-        blood_group:'A+'
+        blood_group:'A+',
+        id:1
     });
 
 

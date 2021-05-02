@@ -9,7 +9,6 @@ export default class ModalRequest extends Component{
             requesterName:'',
             requesterEmail:'',
             requesterPhoneNumber:"",
-            donorAndPatientBloodGroup:this.props.donor.blood_group,
             hospitalName:'',
             hospitalPincode:"",
             requesterCustomMessage:'',
@@ -35,6 +34,7 @@ export default class ModalRequest extends Component{
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
         console.log(name,'changed',value,value.length);
+        console.log(this.props.donor.id,this.state.donorID);
         this.setState({
           [name]: value
         });
@@ -88,7 +88,7 @@ export default class ModalRequest extends Component{
         else{
             this.setState({hospitalAddressError:true});
         }
-
+        /*this.props.donor.id contains donor id and this.props.donor.blood_group contains donor&Patient Blood group(as requester will only send out requests if patient blood group is same as that of donor) */
         fetch(`https://api.postalpincode.in/pincode/${hospitalPincode}`)
         .then(res => res.json())
         .then(res=>{

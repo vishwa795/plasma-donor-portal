@@ -52,8 +52,10 @@ export default class ModalOnboarding extends Component{
     .then(res=>{
         this.setState({district: res[0].PostOffice[0].District});
         this.setState({state:res[0].PostOffice[0].State},()=>console.log(this.state));
-        //this.props.addUserInfo({variables:{}})
-        //TODOS -- add user info mutation here
+        if(!this.state.phoneNumberError && !this.state.recoveredOnError && !this.state.pincodeError){
+            //this.props.addUserInfo({variables:{}})
+            //TODOS -- add user info mutation here
+        }
     })
     .catch((error) => {
         this.setState({pincodeError:true})
