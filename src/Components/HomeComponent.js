@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
-import {Row,Col,Card,CardBody,CardTitle,Button,CardFooter, Container,Modal, ModalBody, Form, FormGroup,Input, Label,Popover,PopoverBody,PopoverHeader} from 'reactstrap';
+import React, { useEffect,useState } from 'react';
+import {Row,Col,Card,CardBody,Toast, ToastBody, ToastHeader,CardTitle,Button,CardFooter, Container,Modal, ModalBody, Form, FormGroup,Input, Label,Popover,PopoverBody,PopoverHeader} from 'reactstrap';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import {AiOutlineExclamationCircle} from 'react-icons/ai';
 import {States} from '../shared/exampleData';
 import { useQuery } from '@apollo/client';
+import {useAuth0} from '@auth0/auth0-react';
 
 import {GET_ALL_DONOR} from '../Graphql/queries'
 
@@ -83,6 +84,10 @@ function Home(props){
     var [stateSelected,setStateSelected] = React.useState("State")
     var [isStateOpen,setStateOpen] = React.useState(false)
     var toggleStateDropdown = ()=> setStateOpen(!isStateOpen);
+
+    const {isAuthenticated} = useAuth0();
+    const [showToast, setShowToast] = useState( isAuthenticated ? false : true);
+    const toggleToast = () => setShowToast(!showToast);
 
     var allBloodGroups = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
     //var 
@@ -199,6 +204,18 @@ function Home(props){
                         </Form>
                     </ModalBody>
                 </Modal>
+            </div>
+            <div>
+            <br />
+            <br />
+            <Col >
+            <Toast className="text-center" isOpen={showToast}>
+                <ToastHeader toggle={toggleToast}>Register as a donor</ToastHeader>
+                <ToastBody>
+                            Please register on plasma portal india as a donor by pressing the Login button at the top of the page.For understanding more about being a donor check out our FAQ section.
+                </ToastBody>
+            </Toast>
+            </Col>
             </div>
         </div>
     )
