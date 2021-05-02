@@ -39,6 +39,16 @@
   border-radius: 50%;
   border:5px solid rgb(77, 168, 77);
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 
 
 @media only screen and (max-width: 768px) {
