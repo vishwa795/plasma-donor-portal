@@ -4,10 +4,17 @@ import Home from './HomeComponent';
 import Header from './HeaderComponent';
 import FAQs from './FAQsComponent'
 import About from './AboutComponent'
+import { useQuery } from '@apollo/client';
+import {GET_USER_DETAILS} from '../Graphql/queries';
+
+import {} from '@auth0/auth0-react';
 
 class Main extends Component{
     constructor(props){
         super(props);
+    }
+    componentDidMount(){
+        
     }
     render(){
         return(

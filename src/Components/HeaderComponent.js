@@ -4,9 +4,25 @@ import {AiOutlineLogin,AiOutlineLogout} from 'react-icons/ai';
 import {TiCancel} from 'react-icons/ti';
 import {BiHelpCircle} from 'react-icons/bi';
 import {FcAbout} from 'react-icons/fc'
-
+import { useQuery } from '@apollo/client';
+import {GET_USER_DETAILS} from '../Graphql/queries';
 import {useAuth0} from '@auth0/auth0-react';
 import {Link} from 'react-router-dom';
+
+function GetUserDetail(props){
+    const userID = localStorage.getItem("user-id");
+    console.log(userID)
+        const { loading, error, data } = useQuery(GET_USER_DETAILS,{variables: { userID },});
+        if(error){
+        }
+        else if(data){
+            console.log(data,"is the data");
+            localStorage.setItem('user',data);
+        }
+        return(
+            <div />
+        )
+}
 
 function Header(props){
     const [isNavOpen,setIsNavOpen] = React.useState(false);
@@ -15,18 +31,28 @@ function Header(props){
     const [isLoginModalOpen,setIsLoginModalOpen] = React.useState(false);
     const toggleModal = () => setIsLoginModalOpen(!isLoginModalOpen);
     const {isAuthenticated,loginWithRedirect,user,getAccessTokenSilently,logout} = useAuth0();
-    useEffect(()=>{
-        const jWTToken = getAccessTokenSilently({
-            audience: `https://${domain}/api/v2/`,
-            scope: "read:current_user",
-          })
-          .then(response=>localStorage.setItem("accessToken",response))
-          .catch(error=>console.log(error.message));
-    })
-    console.log(user);
+    if(user)
+    localStorage.setItem('user-id',user.sub)
+
+    useEffect(() => {
+        (async () => {
+            //console.log('I am here')
+          try {
+              //console.log('Try is Getting executed')
+            const token = await getAccessTokenSilently();
+            //console.log(token," Access Token");
+            localStorage.setItem("accessToken",token);
+          } catch (e) {
+            console.error(e);
+            console.log("Access Token not recieved")
+          }
+        })();
+      }, [getAccessTokenSilently]);
+    
     return(
         <div>
-            <Navbar light expand="md" className="navbar one-edge-shadow" style={{backgroundColor: '#f8f5f1'}}>
+            <GetUserDetail />
+            <Navbar light expand="md" className="navbar one-edge-shadow" >
                 <Container fluid>
                 <NavbarBrand href="/" className="navbrand"><h2>Plasma Portal</h2></NavbarBrand>
                 <NavbarToggler onClick={toggleNav} />
