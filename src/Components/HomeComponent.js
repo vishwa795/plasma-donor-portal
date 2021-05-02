@@ -17,7 +17,7 @@ const RenderCards = ({blood,state}) =>{
     if(data.users.length===0){
         return(
             <div className="text-center">
-            <h6>No Results Found, Check again later</h6>
+            <h6>No Results Found, Try selecting a different filer or Check again later</h6>
             </div>
         )
     }
@@ -113,7 +113,22 @@ function Home(props){
                         <DropdownToggle caret>
                             {stateSelected}
                         </DropdownToggle>
-                        <DropdownMenu>
+                        <DropdownMenu modifiers={{
+                            setMaxHeight: {
+                                enabled: true,
+                                order: 890,
+                                fn: (data) => {
+                                return {
+                                    ...data,
+                                    styles: {
+                                    ...data.styles,
+                                    overflow: 'auto',
+                                    maxHeight: '200px',
+                                    },
+                                };
+                                },
+                            },
+                            }}>
                             {
                                 States.map((state)=><DropdownItem onClick={()=>setStateSelected(state.key)}>{state.name}</DropdownItem>)
                             }
