@@ -104,7 +104,10 @@ function Home(props){
 
     var toggleStateDropdown = ()=> setStateOpen(!isStateOpen);
 
-    const [addUserInfo, { data }] = useMutation(ADD_USER_INFO);
+    const [addUserInfo, { data }] = useMutation(ADD_USER_INFO,{
+        onError: (err) => {
+            console.log(err);
+        }});
     const {isAuthenticated} = useAuth0();
     const [showToast, setShowToast] = useState( isAuthenticated ? false : true);
     const toggleToast = () => setShowToast(!showToast);
