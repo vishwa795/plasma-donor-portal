@@ -50,7 +50,7 @@ function Header(props){
         <div>
             <Navbar light expand="md" className="navbar one-edge-shadow" >
                 <Container fluid>
-                <NavbarBrand href="/" className="navbrand"><h2>Plasma Portal</h2></NavbarBrand>
+                <NavbarBrand href="/" className="navbrand"><h2>Plasma19 India</h2></NavbarBrand>
                 <NavbarToggler onClick={toggleNav} />
                 <Collapse isOpen={isNavOpen} navbar>
                     <Nav className="ml-auto" navbar>

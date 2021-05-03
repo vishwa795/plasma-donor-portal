@@ -20,7 +20,7 @@ const RenderCards = ({blood,state,toggleRequestModal,setRequestModalDonor}) =>{
     if(data.users.length===0){
         return(
             <div className="text-center">
-            <h6>No Results Found, Try selecting a different filer or Check again later</h6>
+            <h6>No Results Found, Try selecting a different filter or Check again later</h6>
             </div>
         )
     }
@@ -110,7 +110,6 @@ function Home(props){
     const toggleToast = () => setShowToast(!showToast);
 
     var allBloodGroups = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
-    //var 
     return(
         <div className="container-fluid mt-2">
             <Row>
@@ -179,8 +178,15 @@ function Home(props){
                 <Toast className="text-center" isOpen={showToast}>
                     <ToastHeader toggle={toggleToast}>Register as a donor</ToastHeader>
                     <ToastBody>
-                                Please register on plasma portal india as a donor by pressing the Login button at the top of the page.For understanding more about being a donor check out our FAQ section.
+                                Please register on plasma19 india as a donor by pressing the Login button at the top of the page.For understanding more about being a donor check out our FAQ section.
                     </ToastBody>
+                    <ToastHeader >We Respect your privacy</ToastHeader>
+                    <ToastBody>
+                                None of your contact information will be revealed without your permission.After logging in as a donor each request will be sent to your email where you can choose to accept and share your information only with the requesting party.  
+                    </ToastBody>
+                </Toast>
+                <Toast className="text-center" isOpen={showToast}>
+                   
                 </Toast>
             </div>
         </div>
