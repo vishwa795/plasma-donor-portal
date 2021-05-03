@@ -70,6 +70,17 @@ export default class ModalOnboarding extends Component{
     })
     }
     render(){
+        let setRequired={};
+        if(this.state.socialType!==''){
+            setRequired = {
+                required:true
+            }
+        }
+        else{
+            setRequired ={
+                disabled:true
+            }
+        }
         return(
             <div>
                 <Modal isOpen={this.props.isOnboardingModalOpen} toggle={this.props.toggleOnboardingModal} >
@@ -88,12 +99,13 @@ export default class ModalOnboarding extends Component{
                                 <Row>
                                     <Col md={6} sm={12} className="">
                                         <Label className="text-warning" for="phone"><h5>Phone Number</h5></Label>
-                                        <Input type="number" name="phoneNumber" id="phoneNumber" value={this.state.phoneNumber} />
+                                        <Input type="number" name="phoneNumber" id="phoneNumber" value={this.state.phoneNumber} required />
                                         {this.state.phoneNumberError && <p className="text-danger">Please Enter a valid Phone number</p>}
                                     </Col>
                                     <Col md={6} sm={12}>
                                     <Label className="text-warning" for="bloodGroup"><h5>Blood Group</h5></Label>
-                                        <Input type="select" name="bloodGroup" id="bloodGroup" value={this.state.bloodGroup}>
+                                        <Input type="select" name="bloodGroup" id="bloodGroup" value={this.state.bloodGroup} required>
+                                            <option value="">Choose Blood Group</option>
                                             <option value="A+">A+</option>
                                             <option value="A-">A-</option>
                                             <option value="B+">B+</option>
@@ -110,14 +122,14 @@ export default class ModalOnboarding extends Component{
                                 <Col sm={12} md={4}>
                                     <FormGroup>
                                         <Label className="text-warning" for="pincode"><h5>Pincode</h5></Label>
-                                        <Input type="number" name="pincode" id="pincode" value={this.state.pincode} />
+                                        <Input type="number" name="pincode" id="pincode" placeholder="Enter Pincode" value={this.state.pincode} required />
                                         {this.state.pincodeError && <p className="text-danger">Please Enter a valid Pincode</p>}
                                     </FormGroup>
                                 </Col>
                                 <Col sm={12} md={8}>
                                     <FormGroup>
                                         <Label className="text-warning" for="recoveredDate"><h5>Recovered / Vaccinated On <AiOutlineExclamationCircle size="20px" id="Popover1" onMouseOver={()=>this.props.setIsPopoverOpen(true)} onMouseLeave={()=>this.props.setIsPopoverOpen(false)} /></h5></Label>
-                                        <Input type="date" name="recoveryDate" id="recoveryDate" value={this.state.recoveredOn} />
+                                        <Input type="date" name="recoveryDate" id="recoveryDate" value={this.state.recoveredOn} required />
                                         <Popover placement="bottom" isOpen={this.props.popoverOpen} target="Popover1">
                                             <PopoverHeader>Vaccination</PopoverHeader>
                                             <PopoverBody>Please Enter the date on which you got 2nd dose of covid vaccine.</PopoverBody>
@@ -131,6 +143,7 @@ export default class ModalOnboarding extends Component{
                                     <FormGroup>
                                         <Label for="socialType" className="text-warning"><h5>Social Account Type</h5></Label>
                                         <Input type="select" name="socialType" id="socialType" value={this.state.socialType}>
+                                            <option value="">None</option>
                                             <option value="facebook">Facebook</option>
                                             <option value="instagram">Instagram</option>
                                             <option value="linkedin">LinkedIn</option>
@@ -141,7 +154,7 @@ export default class ModalOnboarding extends Component{
                                 <Col sm={12} md={6}>
                                     <FormGroup>
                                         <Label for="socialLink" className="text-warning"><h5>Social Account Link</h5></Label>
-                                        <Input type="url" name="socialLink" id="socialType" value={this.state.socialLink} />
+                                        <Input type="url" name="socialLink" id="socialType" placeholder="Profile URL" value={this.state.socialLink} {...setRequired} />
                                     </FormGroup>
                                 </Col>
                             </Row>

@@ -60,6 +60,11 @@ function Header(props){
                             </Link>
                         </NavItem>
                         <NavItem>
+                            <Link to="/onboarding">
+                            <Button  className="navbutton mr-2" ><FcAbout size="20px" /> Onboarding </Button>
+                            </Link>
+                        </NavItem>
+                        <NavItem>
                             <Link to="/faq">
                             <Button  className="navbutton mr-2" ><BiHelpCircle size="20px" /> FAQ </Button>
                             </Link>
