@@ -59,8 +59,8 @@ export const ADD_USER_INFO = gql`mutation AddUserInfo($_eq: String = "", $blood_
   }
 }`
 
-export const DEACTIVATE_USER = gql`mutation DeactivateUser($user_id: String = "") {
+export const DEACTIVATE_USER = gql`mutation DeactivateUser($user_id: String!) {
     update_users(where: {user_id: {_eq: $user_id}}, _set: {status: "false"}) {
-      affected_rows
+      affected_rows 
     }
   }`

@@ -8,6 +8,9 @@ import { useQuery } from '@apollo/client';
 import {GET_USER_DETAILS} from '../Graphql/queries';
 import {useAuth0} from '@auth0/auth0-react';
 import {Link} from 'react-router-dom';
+import { useMutation,Mutation } from '@apollo/client';
+import {DEACTIVATE_USER} from "../Graphql/queries";
+
 
 function GetUserDetail(props){
     const auth0Id = localStorage.getItem("user-id");
@@ -23,12 +26,25 @@ function GetUserDetail(props){
 
 function Header(props){
     GetUserDetail();
+    const [deactivateUser, { data,called,error,loading }] = useMutation(DEACTIVATE_USER);
     const [isNavOpen,setIsNavOpen] = React.useState(false);
     const toggleNav = () => setIsNavOpen(!isNavOpen);
     const domain = process.env.REACT_APP_AUTH0_DOMAIN;
     const [isLoginModalOpen,setIsLoginModalOpen] = React.useState(false);
     const toggleModal = () => setIsLoginModalOpen(!isLoginModalOpen);
     const {isAuthenticated,loginWithRedirect,user,getAccessTokenSilently,logout} = useAuth0();
+
+    console.log("Deacti called init : "+called)
+    if (loading){
+        console.log("waiting for deact to complete")
+    }
+    if (error){
+        console.log(error)
+    }
+    if(data){
+        console.log("Mutation response:",data)
+    }
+
     if(user)
     localStorage.setItem('user-id',user.sub)
     useEffect(() => {
@@ -66,7 +82,7 @@ function Header(props){
                         </NavItem>
                         <NavItem>
                             
-                            { isAuthenticated && <Button className="navbutton mr-2" ><TiCancel size="20px" />Deactivate</Button>}
+                            { isAuthenticated && <Button className="navbutton mr-2" onClick={()=>{deactivateUser({variables:{"user_id":localStorage.getItem("user-id")}});console.log("Deacti called : "+called)}} ><TiCancel size="20px" />Deactivate</Button>}
                         </NavItem>
                         <NavItem>
                             {
