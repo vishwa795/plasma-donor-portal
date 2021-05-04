@@ -37,6 +37,7 @@ export const CHECK_USER_STATUS = gql`query CheckUserStatus($user_id: String = ""
 
 export const GET_ALL_DONOR = gql`query FetchAllDonors($blood: [String!] = "", $state: String = "") {
     users(where: {status: {_eq: "true"}, blood_group: {_in: $blood}, state: {_eq: $state}}) {
+      user_id
       state
       pin_code
       picture
@@ -64,3 +65,10 @@ export const DEACTIVATE_USER = gql`mutation DeactivateUser($user_id: String!) {
       affected_rows 
     }
   }`
+
+export const ADD_NEW_REQUEST = gql`mutation MyMutation($donor_id: Int = 10, $req_email: String = "", $req_hospital: String = "", $req_hospital_address: String = "", $req_hospital_district: String = "", $req_hospital_pin_code: String = "", $req_hospital_state: String = "", $req_message: String = "", $req_name: String = "", $req_phone: String = "") {
+  insert_requests(objects: {donor_id: $donor_id, req_email: $req_email, req_hospital: $req_hospital, req_hospital_address: $req_hospital_address, req_hospital_district: $req_hospital_district, req_hospital_pin_code: $req_hospital_pin_code, req_hospital_state: $req_hospital_state, req_message: $req_message, req_name: $req_name, req_phone: $req_phone}) {
+    affected_rows
+  }
+}
+`

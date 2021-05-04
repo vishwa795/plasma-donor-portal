@@ -96,6 +96,8 @@ export default class ModalRequest extends Component{
             this.setState({hospitalState:res[0].PostOffice[0].State});
             if(!this.state.requesterNameError && !this.state.requesterPhoneNumberError && !this.state.hospitalNameError && !this.state.hospitalPincodeError && !this.state.hospitalAddressError){
                 //TODOS -- add requester mutation here
+                this.props.addNewRequest({variables:{donor_id:this.props.donor.id,req_email:requesterEmail,req_hospital:hospitalName,req_message:this.state.requesterCustomMessage,req_name:requesterName,req_phone:requesterPhoneNumber,req_hospital_pin_code:hospitalPincode,req_hospital_district:hospitalDistrict,req_hospital_address:hospitalAddress,req_hospital_state:hospitalState}});
+
             }
 
         })
@@ -135,7 +137,7 @@ export default class ModalRequest extends Component{
                             <FormGroup>
                                 <Row>
                                     <Col sm={12} className="mb-3">
-                                        <Label for="requesterName" className="text-warning"><h5>Patient Name</h5></Label>
+                                        <Label for="requesterName" className="text-warning"><h5>Caretaker/Patient Name</h5></Label>
                                         <Input type="text" name="requesterName" id="requesterName" placeholder="Patient Name" value={this.state.requesterName} />
                                         {this.state.requesterNameError && <p className="text-danger">Please Enter a valid Name</p>}
                                     </Col>
