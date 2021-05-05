@@ -20,7 +20,8 @@ const RenderCards = ({blood,state,toggleRequestModal,setRequestModalDonor}) =>{
     if(data.users.length===0){
         return(
             <div className="text-center">
-            <h6>No Results Found, Try selecting a different filter or Check again later</h6>
+            <h6>No Results Found, Try selecting a different filter or Check again later</h6><br></br><br></br>
+            <p>Please share this site as much as you can, so that we can get enough donors to span across the country and no-one gets empty result.<br></br></p>
             </div>
         )
     }
