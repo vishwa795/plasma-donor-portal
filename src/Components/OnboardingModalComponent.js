@@ -18,6 +18,7 @@ export default class ModalOnboarding extends Component{
             recoveredOnError:false
         }
     }
+    
     handleInputChange(event) {
         event.preventDefault();
         const target = event.target;
@@ -27,7 +28,8 @@ export default class ModalOnboarding extends Component{
         this.setState({
           [name]: value
         });
-      }
+    }
+
     handleSubmit = (event)=>{
         event.preventDefault();
         const phoneNumber = this.state.phoneNumber;
@@ -59,8 +61,13 @@ export default class ModalOnboarding extends Component{
         const userID = localStorage.getItem('user-id');
         if(!this.state.phoneNumberError && !this.state.recoveredOnError && !this.state.pincodeError){
             const DateISO = new Date(this.state.recoveredOn).toISOString();
+            //TODOS -- close modal
+            console.log(this.props.isOnboardingModalOpen)
+            this.props.toggleOnboardingModal();
+            console.log(this.props.isOnboardingModalOpen)
+            // comment below while testing close modal
             this.props.addUserInfo({variables:{_eq:userID,blood_group:this.state.bloodGroup,district:this.state.district, phone: this.state.phoneNumber, pin_code: this.state.pincode,recovered_on:DateISO,social_link:this.state.socialLink,social_type:this.state.socialType,state:this.state.state}});
-            //TODOS -- add user info mutation here
+            this.props.toggleOnboardingModal();
 
         }
     },(error) => console.log(error))

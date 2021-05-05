@@ -66,8 +66,8 @@ export const DEACTIVATE_USER = gql`mutation DeactivateUser($user_id: String!) {
     }
   }`
 
-export const ADD_NEW_REQUEST = gql`mutation MyMutation($donor_id: Int = 10, $req_email: String = "", $req_hospital: String = "", $req_hospital_address: String = "", $req_hospital_district: String = "", $req_hospital_pin_code: String = "", $req_hospital_state: String = "", $req_message: String = "", $req_name: String = "", $req_phone: String = "") {
-  insert_requests(objects: {donor_id: $donor_id, req_email: $req_email, req_hospital: $req_hospital, req_hospital_address: $req_hospital_address, req_hospital_district: $req_hospital_district, req_hospital_pin_code: $req_hospital_pin_code, req_hospital_state: $req_hospital_state, req_message: $req_message, req_name: $req_name, req_phone: $req_phone}) {
+export const ADD_NEW_REQUEST = gql`mutation MyMutation($donor_id: Int = 10, $req_email: String = "", $req_hospital: String = "", $req_hospital_address: String = "", $req_hospital_district: String = "", $req_hospital_pin_code: String = "", $req_hospital_state: String = "", $req_message: String = "", $req_name: String = "", $req_phone: String = "",$req_blood_group: String = "") {
+  insert_requests(objects: {donor_id: $donor_id, req_email: $req_email, req_hospital: $req_hospital, req_hospital_address: $req_hospital_address, req_hospital_district: $req_hospital_district, req_hospital_pin_code: $req_hospital_pin_code, req_hospital_state: $req_hospital_state, req_message: $req_message, req_name: $req_name, req_phone: $req_phone,req_blood_group: $req_blood_group}) {
     affected_rows
   }
 }
