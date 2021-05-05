@@ -6,7 +6,7 @@ import {States} from '../shared/exampleData';
 import { useQuery } from '@apollo/client';
 import {useAuth0} from '@auth0/auth0-react';
 import { useMutation } from '@apollo/client';  
-import {GET_ALL_DONOR,ADD_USER_INFO} from '../Graphql/queries'
+import {GET_ALL_DONOR,ADD_USER_INFO,ADD_NEW_REQUEST} from '../Graphql/queries'
 import ModalOnboarding from './OnboardingModalComponent';
 import ModalRequest from './RequestModalComponent';
 
@@ -95,7 +95,8 @@ function Home(props){
 
 
     const [popoverOpen,setIsPopoverOpen] = React.useState(false);
-    var [bloodSelected,setBloodSelected] = React.useState("A+")
+    var allBloodGroups = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
+    var [bloodSelected,setBloodSelected] = React.useState(allBloodGroups)
 
     var [isBloodOpen,setBloodOpen] = React.useState(false)
     const toggleBlood = () => setBloodOpen(prevState => !prevState);
@@ -109,11 +110,13 @@ function Home(props){
         onError: (err) => {
             console.log(err);
         }});
+    const [addNewRequest, { requestData }] = useMutation(ADD_NEW_REQUEST,{
+        onError: (err) => {
+            console.log(err);
+        }});
     const {isAuthenticated} = useAuth0();
     const [showToast, setShowToast] = useState( isAuthenticated ? false : true);
     const toggleToast = () => setShowToast(!showToast);
-
-    var allBloodGroups = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
     return(
         <div className="container-fluid mt-2">
             <Row>
@@ -176,7 +179,7 @@ function Home(props){
             </Row>
             <ModalOnboarding isOnboardingModalOpen={isOnboardingModalOpen} toggleOnboardingModal={toggleOnboardingModal} popoverOpen={popoverOpen} setIsPopoverOpen={setIsPopoverOpen} addUserInfo={addUserInfo} />
             <ModalRequest isRequestModalOpen={isRequestModalOpen} toggleRequestModal={toggleRequestModal} 
-            donor={requestModalDonor}
+            donor={requestModalDonor} addNewRequest={addNewRequest}
             />
             <div className="toast-notification">
                 <Toast className="text-center" isOpen={showToast}>

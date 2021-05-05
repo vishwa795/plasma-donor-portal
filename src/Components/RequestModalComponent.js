@@ -8,6 +8,7 @@ export default class ModalRequest extends Component{
         this.state={
             requesterName:'',
             requesterEmail:'',
+            requesterBloodGroup:'',
             requesterPhoneNumber:"",
             hospitalName:'',
             hospitalPincode:"",
@@ -17,11 +18,13 @@ export default class ModalRequest extends Component{
             hospitalDistrict:'',
             
             requesterNameError:false,
+            requesterBloodGroupError:false,
             requesterEmailError:false,
             requesterPhoneNumberError:false,
             hospitalNameError:false,
             hospitalPincodeError:false,
             hospitalAddressError:false,
+
 
             ishospitalNamePopoverOpen:false
         }
@@ -42,6 +45,7 @@ export default class ModalRequest extends Component{
     handleSubmit = (event)=>{
         //validation
         const requesterName = this.state.requesterName;
+        const requesterBloodGroup = this.state.requesterBloodGroup;
         const requesterEmail = this.state.requesterEmail;
         const requesterPhoneNumber = this.state.requesterPhoneNumber;
         const hospitalName = this.state.hospitalName;
@@ -65,7 +69,7 @@ export default class ModalRequest extends Component{
             this.setState({requesterPhoneNumberError:true});
         }
         else{
-            this.setState({requesterPhoneNumberError:true});
+            this.setState({requesterPhoneNumberError:false});
         }
 
         if(hospitalName.length===0){
@@ -82,11 +86,18 @@ export default class ModalRequest extends Component{
             this.setState({hospitalPincodeError:false});
         }
 
+        if(requesterBloodGroup===''){
+            this.setState({requesterBloodGroupError:true});
+        }
+        else{
+            this.setState({requesterBloodGroupError:false});
+        }
+
         if(hospitalAddress.length<10){
             this.setState({hospitalAddressError:true});
         }
         else{
-            this.setState({hospitalAddressError:true});
+            this.setState({hospitalAddressError:false});
         }
         /*this.props.donor.id contains donor id and this.props.donor.blood_group contains donor&Patient Blood group(as requester will only send out requests if patient blood group is same as that of donor) */
         fetch(`https://api.postalpincode.in/pincode/${hospitalPincode}`)
@@ -94,14 +105,14 @@ export default class ModalRequest extends Component{
         .then(res=>{
             this.setState({hospitalDistrict: res[0].PostOffice[0].District});
             this.setState({hospitalState:res[0].PostOffice[0].State});
-            if(!this.state.requesterNameError && !this.state.requesterPhoneNumberError && !this.state.hospitalNameError && !this.state.hospitalPincodeError && !this.state.hospitalAddressError){
+            if(!this.state.requesterNameError && !this.state.requesterBloodGroupError && !this.state.requesterPhoneNumberError && !this.state.hospitalNameError && !this.state.hospitalPincodeError && !this.state.hospitalAddressError){
                 //TODOS -- add requester mutation here
-                this.props.addNewRequest({variables:{donor_id:this.props.donor.id,req_email:requesterEmail,req_hospital:hospitalName,req_message:this.state.requesterCustomMessage,req_name:requesterName,req_phone:requesterPhoneNumber,req_hospital_pin_code:hospitalPincode,req_hospital_district:res[0].PostOffice[0].District,req_hospital_address:hospitalAddress,req_hospital_state:res[0].PostOffice[0].State}});
-
+                this.props.addNewRequest({variables:{donor_id:this.props.donor.id,req_blood_group:this.state.requesterBloodGroup,req_email:requesterEmail,req_hospital:hospitalName,req_message:this.state.requesterCustomMessage,req_name:requesterName,req_phone:requesterPhoneNumber,req_hospital_pin_code:hospitalPincode,req_hospital_district:res[0].PostOffice[0].District,req_hospital_address:hospitalAddress,req_hospital_state:res[0].PostOffice[0].State}});
+                this.props.toggleRequestModal();
             }
-
         })
         .catch((error) => {
+            console.log(error);
             this.setState({hospitalPincodeError:true})
         })
        event.preventDefault();
@@ -136,10 +147,25 @@ export default class ModalRequest extends Component{
                         <Form className="mt-5" onChange={(event)=>this.handleInputChange(event)} onSubmit={(event)=>this.handleSubmit(event)} >
                             <FormGroup>
                                 <Row>
-                                    <Col sm={12} className="mb-3">
+                                    <Col sm={12} md={6} className="mb-3">
                                         <Label for="requesterName" className="text-warning"><h5>Caretaker/Patient Name</h5></Label>
                                         <Input type="text" name="requesterName" id="requesterName" placeholder="Patient Name" value={this.state.requesterName} />
                                         {this.state.requesterNameError && <p className="text-danger">Please Enter a valid Name</p>}
+                                    </Col>
+                                    <Col md={6} sm={12}>
+                                    <Label className="text-warning" for="requesterBloodGroup"><h5>Blood Group</h5></Label>
+                                        <Input type="select" name="requesterBloodGroup" id="requesterBloodGroup" value={this.state.bloodGroup} required>
+                                            <option value="">Choose Blood Group</option>
+                                            <option value="A+">A+</option>
+                                            <option value="A-">A-</option>
+                                            <option value="B+">B+</option>
+                                            <option value="B-">B-</option>
+                                            <option value="AB+">AB+</option>
+                                            <option value="AB-">AB-</option>
+                                            <option value="O+">O+</option>
+                                            <option value="O-">O-</option>
+                                        </Input>
+                                        {this.state.requesterPhoneNumberError && <p className="text-danger">Choose a Blood Group</p>}
                                     </Col>
                                     <Col md={6} sm={12} className="">
                                         <Label className="text-warning" for="requesterPhoneNumber"><h5>Phone Number</h5></Label>

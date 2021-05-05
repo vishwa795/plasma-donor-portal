@@ -18,6 +18,7 @@ export default class ModalOnboarding extends Component{
             recoveredOnError:false
         }
     }
+    
     handleInputChange(event) {
         event.preventDefault();
         const target = event.target;
@@ -27,7 +28,8 @@ export default class ModalOnboarding extends Component{
         this.setState({
           [name]: value
         });
-      }
+    }
+
     handleSubmit = (event)=>{
         event.preventDefault();
         const phoneNumber = this.state.phoneNumber;
