@@ -10,15 +10,17 @@ const RenderCards = (props) =>{
             <Container className="pt-5 pb-2">
                 <div className="question p-3" style={{backgroundColor: '#f8f5f1', border: 'none', borderLeftStyle: 'solid', borderLeftWidth: '.5rem', borderLeftColor: '#f8a488'}}>
                     <h1>
-                        <div className='faq-question'>Q.</div>
+                        <span className='pl-1 pr-4'>
+                            Q.
+                        </span>
                         {qa.question}
                     </h1>
                 </div>
                 <div className="answer p-3" style={{border: 'none', borderLeftStyle: 'solid', borderLeftWidth: '.5rem', borderLeftColor: '#f8f5f1', color: 'grey'}}>
-                    <div className="faq-answer">
-                        <h1>A.</h1>
-                    </div>
-                    <span>
+                    <h1 className='d-inline pl-1 pr-4'>
+                        A.
+                    </h1>
+                    <span className='d-inline'>
                         {qa.answer}
                     </span>
                 </div>
