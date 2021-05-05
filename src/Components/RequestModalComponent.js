@@ -96,7 +96,7 @@ export default class ModalRequest extends Component{
             this.setState({hospitalState:res[0].PostOffice[0].State});
             if(!this.state.requesterNameError && !this.state.requesterPhoneNumberError && !this.state.hospitalNameError && !this.state.hospitalPincodeError && !this.state.hospitalAddressError){
                 //TODOS -- add requester mutation here
-                this.props.addNewRequest({variables:{donor_id:this.props.donor.id,req_email:requesterEmail,req_hospital:hospitalName,req_message:this.state.requesterCustomMessage,req_name:requesterName,req_phone:requesterPhoneNumber,req_hospital_pin_code:hospitalPincode,req_hospital_district:hospitalDistrict,req_hospital_address:hospitalAddress,req_hospital_state:hospitalState}});
+                this.props.addNewRequest({variables:{donor_id:this.props.donor.id,req_email:requesterEmail,req_hospital:hospitalName,req_message:this.state.requesterCustomMessage,req_name:requesterName,req_phone:requesterPhoneNumber,req_hospital_pin_code:hospitalPincode,req_hospital_district:res[0].PostOffice[0].District,req_hospital_address:hospitalAddress,req_hospital_state:res[0].PostOffice[0].State}});
 
             }
 
