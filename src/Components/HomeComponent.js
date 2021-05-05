@@ -108,6 +108,12 @@ function Home(props){
         onError: (err) => {
             console.log(err);
         }});
+    let showOnBoarding = true;
+        if(data && data.update_users){
+            if(data.update_users.affected_rows==1){
+                showOnBoarding=false;
+            }
+        }
     const {isAuthenticated} = useAuth0();
     const [showToast, setShowToast] = useState( isAuthenticated ? false : true);
     const toggleToast = () => setShowToast(!showToast);
@@ -179,7 +185,7 @@ function Home(props){
                     </Container>
                 </Col>
             </Row>
-            <ModalOnboarding isOnboardingModalOpen={isAuthenticated && userStatus.users[0].status==="onboarding"} toggleOnboardingModal={toggleOnboardingModal} popoverOpen={popoverOpen} setIsPopoverOpen={setIsPopoverOpen} addUserInfo={addUserInfo} />
+            <ModalOnboarding isOnboardingModalOpen={isAuthenticated && userStatus.users[0].status==="onboarding" && showOnBoarding } toggleOnboardingModal={toggleOnboardingModal} popoverOpen={popoverOpen} setIsPopoverOpen={setIsPopoverOpen} addUserInfo={addUserInfo} />
             <ModalRequest isRequestModalOpen={isRequestModalOpen} toggleRequestModal={toggleRequestModal} 
             donor={requestModalDonor}
             />

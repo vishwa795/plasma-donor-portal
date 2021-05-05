@@ -65,7 +65,7 @@ export default class ModalOnboarding extends Component{
             console.log(this.props.isOnboardingModalOpen)
             // comment below while testing close modal
             this.props.addUserInfo({variables:{_eq:userID,blood_group:this.state.bloodGroup,district:this.state.district, phone: this.state.phoneNumber, pin_code: this.state.pincode,recovered_on:DateISO,social_link:this.state.socialLink,social_type:this.state.socialType,state:this.state.state}});
-            
+            this.props.toggleOnboardingModal();
 
         }
     },(error) => console.log(error))
