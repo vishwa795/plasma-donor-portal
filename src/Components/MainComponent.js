@@ -55,15 +55,18 @@ class Main extends Component{
     render(){
         const {isAuthenticated} = this.props.auth0;
         console.log("Authenticated?",isAuthenticated);
+
         return(
             <React.Fragment>
                 <ApolloProvider client={isAuthenticated?authdClient:unauthdClient}>
                 <Header setUserInfo={this.setUserInfo} />
                 <Switch location={this.props.location}>
+                 
                     <Route path="/about" exact component={(props)=><About {...props} />} />
                     <Route path="/faq" exact component={(props)=><FAQs {...props} />} />
                     <Route path="/:page?" component={(props)=><Home {...props} />} />
                     <Redirect to="/" />
+                    
                 </Switch>
                 </ApolloProvider>
             </React.Fragment>

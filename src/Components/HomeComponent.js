@@ -6,7 +6,7 @@ import {States} from '../shared/exampleData';
 import { useQuery } from '@apollo/client';
 import {useAuth0} from '@auth0/auth0-react';
 import { useMutation } from '@apollo/client';  
-import {GET_ALL_DONOR,ADD_USER_INFO,ADD_NEW_REQUEST} from '../Graphql/queries'
+import {GET_ALL_DONOR,ADD_USER_INFO,ADD_NEW_REQUEST,CHECK_USER_STATUS} from '../Graphql/queries'
 import ModalOnboarding from './OnboardingModalComponent';
 import ModalRequest from './RequestModalComponent';
 
@@ -79,7 +79,7 @@ const RenderCards = ({blood,state,toggleRequestModal,setRequestModalDonor}) =>{
 function Home(props){
 
     const {page} = props.match.params;
-    const [isOnboardingModalOpen,setIsOnBoardingModalOpen] = React.useState(page==="onboarding"?true:false);
+    const [isOnboardingModalOpen,setIsOnBoardingModalOpen] = React.useState(true);
     const toggleOnboardingModal = () => setIsOnBoardingModalOpen(!isOnboardingModalOpen);
 
 
@@ -95,8 +95,7 @@ function Home(props){
 
 
     const [popoverOpen,setIsPopoverOpen] = React.useState(false);
-    var allBloodGroups = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
-    var [bloodSelected,setBloodSelected] = React.useState(allBloodGroups)
+    var [bloodSelected,setBloodSelected] = React.useState(["Select Blood Group"])
 
     var [isBloodOpen,setBloodOpen] = React.useState(false)
     const toggleBlood = () => setBloodOpen(prevState => !prevState);
@@ -117,8 +116,21 @@ function Home(props){
     const {isAuthenticated} = useAuth0();
     const [showToast, setShowToast] = useState( isAuthenticated ? false : true);
     const toggleToast = () => setShowToast(!showToast);
+    let showOnBoarding = true;
+        if(data && data.update_users){
+            if(data.update_users.affected_rows==1){
+                showOnBoarding=false;
+            }
+        }
+    const {data:userStatus,loading} =useQuery(CHECK_USER_STATUS,{variables:{"user_id":localStorage.getItem("user-id")}})
+    if (loading) { return "Loading..."}
+    //if (error){return "An Error Occured"+error}
+    console.log("userStatus : ",userStatus)
+
+    var allBloodGroups = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
     return(
         <div className="container-fluid mt-2">
+            
             <Row>
             <Col md={2} sm={5}>
                 <FormGroup>
@@ -177,7 +189,7 @@ function Home(props){
                     </Container>
                 </Col>
             </Row>
-            <ModalOnboarding isOnboardingModalOpen={isOnboardingModalOpen} toggleOnboardingModal={toggleOnboardingModal} popoverOpen={popoverOpen} setIsPopoverOpen={setIsPopoverOpen} addUserInfo={addUserInfo} />
+            <ModalOnboarding isOnboardingModalOpen={isAuthenticated && userStatus.users[0].status==="onboarding" && showOnBoarding } toggleOnboardingModal={toggleOnboardingModal} popoverOpen={popoverOpen} setIsPopoverOpen={setIsPopoverOpen} addUserInfo={addUserInfo} />
             <ModalRequest isRequestModalOpen={isRequestModalOpen} toggleRequestModal={toggleRequestModal} 
             donor={requestModalDonor} addNewRequest={addNewRequest}
             />
