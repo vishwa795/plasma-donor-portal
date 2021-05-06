@@ -97,3 +97,11 @@ input[type=number] {
 .color-orange{
   color:#da5240;
 }
+
+.col-sm-auto{
+  width:auto !important;
+}
+
+.noresults-img{
+  max-height: 40vh;
+}

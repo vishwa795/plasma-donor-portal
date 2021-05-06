@@ -19,9 +19,14 @@ const RenderCards = ({blood,state,toggleRequestModal,setRequestModalDonor}) =>{
     console.log(data);
     if(data.users.length===0){
         return(
+            <div>
+                <div className="text-center mb-1">
+                    <img src='./NoResults.jpg' className="img-fluid noresults-img" />
+                </div>
             <div className="text-center">
             <h6>No Results Found, Try selecting a different filter or Check again later</h6><br></br><br></br>
             <p>Please share this site as much as you can, so that we can get enough donors to span across the country and no-one gets empty result.<br></br></p>
+            </div>
             </div>
         )
     }
@@ -125,13 +130,12 @@ function Home(props){
     //if (error){return "An Error Occured"+error}
     console.log("userStatus : ",userStatus)
     return(
-        <div className="container-fluid mt-2">
-            
-            <Row>
-            <Col md={2} sm={5}>
+        <div className="container-fluid mt-3">
                 <FormGroup>
-                    <Label for="bloodGroupDropDown"><h5>Blood Group</h5></Label>
-                    <Dropdown isOpen={isBloodOpen} id="bloodGroupDropDown" toggle={toggleBlood}>
+                    <Row>
+                    <Col sm={'auto'}>
+                    <Label for="bloodGroupDropDown" className="d-sm-inline"><h5 className="d-sm-inline">Blood Group</h5></Label>
+                    <Dropdown isOpen={isBloodOpen} id="bloodGroupDropDown" toggle={toggleBlood} className="d-sm-inline ml-sm-2">
                             <DropdownToggle caret>
                                 {bloodSelected.length<=1?
                                 bloodSelected :
@@ -142,39 +146,38 @@ function Home(props){
                                 <DropdownItem onClick={()=>setBloodSelected(allBloodGroups)}>All</DropdownItem>
                             </DropdownMenu>
                     </Dropdown>
-                </FormGroup>
-            </Col>
-            <Col md={2} sm={5}>
-            <FormGroup>
-                <Label for="stateDropdown"><h5>State</h5></Label>
-                <Dropdown color="success" isOpen={isStateOpen} id="stateDropdown" toggle={toggleStateDropdown}>
-                        <DropdownToggle caret>
-                            {stateSelected}
-                        </DropdownToggle>
-                        <DropdownMenu modifiers={{
-                            setMaxHeight: {
-                                enabled: true,
-                                order: 890,
-                                fn: (data) => {
-                                return {
-                                    ...data,
-                                    styles: {
-                                    ...data.styles,
-                                    overflow: 'auto',
-                                    maxHeight: '200px',
+                    </Col>
+                    <Col sm={'auto'}>
+                    <Label for="stateDropdown" className="d-sm-inline"><h5 className='d-sm-inline'>State</h5></Label>
+                    <Dropdown color="success" isOpen={isStateOpen} id="stateDropdown" toggle={toggleStateDropdown} className="d-sm-inline ml-sm-2">
+                            <DropdownToggle caret>
+                                {stateSelected}
+                            </DropdownToggle>
+                            <DropdownMenu modifiers={{
+                                setMaxHeight: {
+                                    enabled: true,
+                                    order: 890,
+                                    fn: (data) => {
+                                    return {
+                                        ...data,
+                                        styles: {
+                                        ...data.styles,
+                                        overflow: 'auto',
+                                        maxHeight: '200px',
+                                        },
+                                    };
                                     },
-                                };
                                 },
-                            },
-                            }}>
-                            {
-                                States.map((state)=><DropdownItem onClick={()=>setStateSelected(state.name)}>{state.name}</DropdownItem>)
-                            }
-                        </DropdownMenu>
-                </Dropdown>
+                                }}>
+                                {
+                                    States.map((state)=><DropdownItem onClick={()=>setStateSelected(state.name)}>{state.name}</DropdownItem>)
+                                }
+                            </DropdownMenu>
+                    </Dropdown>
+                    </Col>
+                    </Row>
             </FormGroup>
-            </Col>
-            </Row>
+            <hr />
             <Row className="mt-3">
                 <Col sm={0} md={3}>
                 </Col>
