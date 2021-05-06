@@ -1,7 +1,7 @@
 import React, { Component, useEffect,useState } from 'react';
-import {Row,Col,Card,CardBody,Toast, ToastBody, ToastHeader,CardTitle,Button,CardFooter, Container,Modal, ModalBody, Form, FormGroup,Input, Label,Popover,PopoverBody,PopoverHeader} from 'reactstrap';
+import {Row,Col,Card,CardBody,Toast, ToastBody, ToastHeader,CardTitle,Button,CardFooter, Container,Modal, ModalBody, Form, FormGroup,Input, Label,Popover,PopoverBody,PopoverHeader,Spinner} from 'reactstrap';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import {AiOutlineExclamationCircle} from 'react-icons/ai';
+import Skeleton from 'react-loading-skeleton';
 import {States} from '../shared/exampleData';
 import { useQuery } from '@apollo/client';
 import {useAuth0} from '@auth0/auth0-react';
@@ -14,7 +14,14 @@ const RenderCards = ({blood,state,toggleRequestModal,setRequestModalDonor}) =>{
    
     // Making graphql query
     const { loading, error, data } = useQuery(GET_ALL_DONOR,{variables: { blood,state },});
-    if (loading) return <div className="text-center">Loading...</div>;
+    if (loading){
+    return(
+        <div>
+            <Skeleton duration={2} height={150} /> 
+            <Skeleton duration={2} count={3}/>
+        </div>
+    );
+    }
     if (error){console.log(error); return <div className="text-center">An Error Occured</div>};
     console.log(data);
     if(data.users.length===0){
@@ -126,7 +133,13 @@ function Home(props){
             }
         }
     const {data:userStatus,loading} =useQuery(CHECK_USER_STATUS,{variables:{"user_id":localStorage.getItem("user-id")}})
-    if (loading) { return "Loading..."}
+    if (loading) { return(
+        <div className="h-100">
+            <div className="h-100 text-center mt-5 pt-5">
+            <Spinner className="align-items-center" color="dark" />
+            </div>
+        </div>
+    )}
     //if (error){return "An Error Occured"+error}
     console.log("userStatus : ",userStatus)
     return(

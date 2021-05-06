@@ -105,3 +105,9 @@ input[type=number] {
 .noresults-img{
   max-height: 40vh;
 }
+
+.loader{
+  height: 100%;
+  position: relative;
+  top:40%
+}
