@@ -140,7 +140,6 @@ function Home(props){
                             <DropdownMenu>
                                 {allBloodGroups.map((bloodGroup)=><DropdownItem onClick={()=>setBloodSelected([bloodGroup])}>{bloodGroup}</DropdownItem>)}
                                 <DropdownItem onClick={()=>setBloodSelected(allBloodGroups)}>All</DropdownItem>
-                                
                             </DropdownMenu>
                     </Dropdown>
                 </FormGroup>
@@ -169,7 +168,7 @@ function Home(props){
                             },
                             }}>
                             {
-                                States.map((state)=><DropdownItem onClick={()=>setStateSelected(state.key)}>{state.name}</DropdownItem>)
+                                States.map((state)=><DropdownItem onClick={()=>setStateSelected(state.name)}>{state.name}</DropdownItem>)
                             }
                         </DropdownMenu>
                 </Dropdown>

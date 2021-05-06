@@ -33,6 +33,7 @@ export default class ModalOnboarding extends Component{
 
     handleSubmit = (event)=>{
         event.preventDefault();
+        console.log(this.state,"State");
         const phoneNumber = this.state.phoneNumber;
         if(phoneNumber.length < 10 || phoneNumber.length>10){
             this.setState({phoneNumberError:true})
@@ -61,13 +62,13 @@ export default class ModalOnboarding extends Component{
         this.setState({state:res[0].PostOffice[0].State},()=>console.log(this.state));
         const userID = localStorage.getItem('user-id');
         if(!this.state.phoneNumberError && !this.state.recoveredOnError && !this.state.pincodeError){
-            const DateISO = new Date(this.state.recoveredOn).toISOString();
             //TODOS -- close modal
             console.log(this.props.isOnboardingModalOpen)
             this.props.toggleOnboardingModal();
             console.log(this.props.isOnboardingModalOpen)
             // comment below while testing close modal
-            this.props.addUserInfo({variables:{_eq:userID,blood_group:this.state.bloodGroup,district:this.state.district, phone: this.state.phoneNumber, pin_code: this.state.pincode,recovered_on:DateISO,social_link:this.state.socialLink,social_type:this.state.socialType,state:this.state.state}});
+            console.log('Add user INfO');
+            this.props.addUserInfo({variables:{_eq:userID,blood_group:this.state.bloodGroup,district:this.state.district, phone: this.state.phoneNumber, pin_code: this.state.pincode, recovered_on:this.state.recoveredOn, social_link:this.state.socialLink,social_type:this.state.socialType,state:this.state.state}});
             store.addNotification({
                 title: "Onboarding Successfull",
                 message: `Thank You for providing us your details required. Rest assured your data is safe with us.`,
@@ -148,8 +149,8 @@ export default class ModalOnboarding extends Component{
                                 </Col>
                                 <Col sm={12} md={8}>
                                     <FormGroup>
-                                        <Label className="text-warning" for="recoveredDate"><h5>Recovered / Vaccinated On <AiOutlineExclamationCircle size="20px" id="Popover1" onMouseOver={()=>this.props.setIsPopoverOpen(true)} onMouseLeave={()=>this.props.setIsPopoverOpen(false)} /></h5></Label>
-                                        <Input type="date" name="recoveryDate" id="recoveryDate" value={this.state.recoveredOn} required />
+                                        <Label className="text-warning" for="recoveredOn"><h5>Recovered / Vaccinated On <AiOutlineExclamationCircle size="20px" id="Popover1" onMouseOver={()=>this.props.setIsPopoverOpen(true)} onMouseLeave={()=>this.props.setIsPopoverOpen(false)} /></h5></Label>
+                                        <Input type="date" name="recoveredOn" id="recoveredOn" value={this.state.recoveredOn} required />
                                         <Popover placement="bottom" isOpen={this.props.popoverOpen} target="Popover1">
                                             <PopoverHeader>Vaccination</PopoverHeader>
                                             <PopoverBody>Please Enter the date on which you got 2nd dose of covid vaccine.</PopoverBody>
