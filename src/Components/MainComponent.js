@@ -49,9 +49,6 @@ class Main extends Component{
         }
     }
     setUserInfo = (userInfo) => this.setState({user:userInfo});
-    componentDidMount(){
-        
-    }
     render(){
         const {isAuthenticated} = this.props.auth0;
         console.log("Authenticated?",isAuthenticated);
@@ -64,7 +61,7 @@ class Main extends Component{
                  
                     <Route path="/about" exact component={(props)=><About {...props} />} />
                     <Route path="/faq" exact component={(props)=><FAQs {...props} />} />
-                    <Route path="/:page?" component={(props)=><Home {...props} />} />
+                    <Route path="/" component={(props)=><Home showNotification={true} />} />
                     <Redirect to="/" />
                     
                 </Switch>

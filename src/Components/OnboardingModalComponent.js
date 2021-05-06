@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {Row,Col,Button,Modal, ModalBody, Form, FormGroup,Input, Label,Popover,PopoverBody,PopoverHeader} from 'reactstrap';
 import {AiOutlineExclamationCircle} from 'react-icons/ai';
+import {store} from 'react-notifications-component';
 export default class ModalOnboarding extends Component{
     constructor(props){
         super(props);
@@ -18,7 +19,7 @@ export default class ModalOnboarding extends Component{
             recoveredOnError:false
         }
     }
-    
+
     handleInputChange(event) {
         event.preventDefault();
         const target = event.target;
@@ -67,8 +68,20 @@ export default class ModalOnboarding extends Component{
             console.log(this.props.isOnboardingModalOpen)
             // comment below while testing close modal
             this.props.addUserInfo({variables:{_eq:userID,blood_group:this.state.bloodGroup,district:this.state.district, phone: this.state.phoneNumber, pin_code: this.state.pincode,recovered_on:DateISO,social_link:this.state.socialLink,social_type:this.state.socialType,state:this.state.state}});
-            this.props.toggleOnboardingModal();
-
+            store.addNotification({
+                title: "Onboarding Successfull",
+                message: `Thank You for providing us your details required. Rest assured your data is safe with us.`,
+                type: "success",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animate__animated", "animate__fadeIn"],
+                animationOut: ["animate__animated", "animate__fadeOut"],
+                dismiss: {
+                  duration: 10000,
+                  onScreen: true
+                }
+              });
+            console.log(store);
         }
     },(error) => console.log(error))
     .catch((error) => {

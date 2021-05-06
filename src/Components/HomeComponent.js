@@ -77,11 +77,10 @@ const RenderCards = ({blood,state,toggleRequestModal,setRequestModalDonor}) =>{
 
 
 function Home(props){
+    const {isAuthenticated} = useAuth0();
 
-    const {page} = props.match.params;
     const [isOnboardingModalOpen,setIsOnBoardingModalOpen] = React.useState(true);
     const toggleOnboardingModal = () => setIsOnBoardingModalOpen(!isOnboardingModalOpen);
-
 
     const [isRequestModalOpen,setIsRequestModalOpen] = React.useState(false);
     const toggleRequestModal = ()=> setIsRequestModalOpen(!isRequestModalOpen);
@@ -113,7 +112,6 @@ function Home(props){
         onError: (err) => {
             console.log(err);
         }});
-    const {isAuthenticated} = useAuth0();
     const [showToast, setShowToast] = useState( isAuthenticated ? false : true);
     const toggleToast = () => setShowToast(!showToast);
     let showOnBoarding = true;
