@@ -32,7 +32,7 @@ function Header(props){
     const domain = process.env.REACT_APP_AUTH0_DOMAIN;
     const [isLoginModalOpen,setIsLoginModalOpen] = React.useState(false);
     const toggleModal = () => setIsLoginModalOpen(!isLoginModalOpen);
-    const {isAuthenticated,loginWithRedirect,user,getAccessTokenSilently,logout} = useAuth0();
+    const {isAuthenticated,loginWithRedirect,getAccessTokenSilently,logout} = useAuth0();
 
     console.log("Deacti called init : "+called)
     if (loading){
@@ -45,8 +45,6 @@ function Header(props){
         console.log("Mutation response:",data)
     }
 
-    if(user)
-    localStorage.setItem('user-id',user.sub)
     useEffect(() => {
         (async () => {
             //console.log('I am here')
