@@ -50,7 +50,11 @@ class Main extends Component{
     }
     setUserInfo = (userInfo) => this.setState({user:userInfo});
     render(){
-        const {isAuthenticated} = this.props.auth0;
+        const {isAuthenticated,user} = this.props.auth0;
+        if(isAuthenticated){
+          localStorage.setItem('user-id',user.sub);
+          console.log('User Details have been stored!');
+        }
         console.log("Authenticated?",isAuthenticated);
 
         return(

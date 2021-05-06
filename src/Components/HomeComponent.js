@@ -92,14 +92,14 @@ function Home(props){
         id:1
     });
 
-
+    var allBloodGroups = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
     const [popoverOpen,setIsPopoverOpen] = React.useState(false);
-    var [bloodSelected,setBloodSelected] = React.useState(["Select Blood Group"])
+    var [bloodSelected,setBloodSelected] = React.useState(allBloodGroups);
 
     var [isBloodOpen,setBloodOpen] = React.useState(false)
     const toggleBlood = () => setBloodOpen(prevState => !prevState);
 
-    var [stateSelected,setStateSelected] = React.useState("State");
+    var [stateSelected,setStateSelected] = React.useState("Select State");
     var [isStateOpen,setStateOpen] = React.useState(false);
 
     var toggleStateDropdown = ()=> setStateOpen(!isStateOpen);
@@ -124,8 +124,6 @@ function Home(props){
     if (loading) { return "Loading..."}
     //if (error){return "An Error Occured"+error}
     console.log("userStatus : ",userStatus)
-
-    var allBloodGroups = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
     return(
         <div className="container-fluid mt-2">
             
