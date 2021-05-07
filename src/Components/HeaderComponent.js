@@ -87,7 +87,7 @@ function Header(props){
             <div>
                 <Modal isOpen={isDeactivateModalOpen} >
                         <ModalBody className="text-light">
-                            <h5>Deactive will permanently remove your information from Plasma19India.org and will not be listed any more. Are you sure you want to deactive ? 
+                            <h5>Deactivate will permanently remove your information from Plasma19India.org and will not be listed any more. Are you sure you want to deactive ? 
                             </h5>
                             <div className="text-center">
                             <Button color="danger" className="mr-5" onClick={()=>{deactivateUser({variables:{"user_id":localStorage.getItem("user-id")}});logout({ returnTo: window.location.origin });}}>

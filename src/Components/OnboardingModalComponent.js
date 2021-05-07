@@ -101,7 +101,7 @@ export default class ModalOnboarding extends Component{
             <div>
                 <Modal isOpen={this.props.isOnboardingModalOpen} toggle={this.props.toggleOnboardingModal} >
                     <ModalBody>
-                        <div className="text-center text-danger">
+                        <div className="text-center text-light">
                             <h3>We Require more Details</h3>
                         </div>
                         <Form className="mt-5" onChange={(event)=>{

@@ -223,7 +223,7 @@ function Home(props){
                     </Container>
                 </Col>
             </Row>
-            <ModalOnboarding isOnboardingModalOpen={isAuthenticated && userStatus.users[0].status==="onboarding" && showOnBoarding } toggleOnboardingModal={toggleOnboardingModal} popoverOpen={popoverOpen} setIsPopoverOpen={setIsPopoverOpen} addUserInfo={addUserInfo} />
+            <ModalOnboarding isOnboardingModalOpen={isAuthenticated && userStatus && userStatus.users[0].status==="onboarding" && showOnBoarding } toggleOnboardingModal={toggleOnboardingModal} popoverOpen={popoverOpen} setIsPopoverOpen={setIsPopoverOpen} addUserInfo={addUserInfo} />
             <ModalRequest isRequestModalOpen={isRequestModalOpen} toggleRequestModal={toggleRequestModal} 
             donor={requestModalDonor} addNewRequest={addNewRequest}
             />
