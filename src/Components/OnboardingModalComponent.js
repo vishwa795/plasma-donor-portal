@@ -25,7 +25,6 @@ export default class ModalOnboarding extends Component{
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-        console.log(name,'changed',value,value.length);
         this.setState({
           [name]: value
         });
@@ -33,7 +32,6 @@ export default class ModalOnboarding extends Component{
 
     handleSubmit = (event)=>{
         event.preventDefault();
-        console.log(this.state,"State");
         const phoneNumber = this.state.phoneNumber;
         if(phoneNumber.length < 10 || phoneNumber.length>10){
             this.setState({phoneNumberError:true})
@@ -62,15 +60,10 @@ export default class ModalOnboarding extends Component{
     .then(res => res.json())
     .then(res=>{
         this.setState({district: res[0].PostOffice[0].District});
-        this.setState({state:res[0].PostOffice[0].State},()=>console.log(this.state));
+        this.setState({state:res[0].PostOffice[0].State});
         const userID = localStorage.getItem('user-id');
         if(!this.state.phoneNumberError && !this.state.recoveredOnError && !this.state.pincodeError){
-            //TODOS -- close modal
-            console.log(this.props.isOnboardingModalOpen)
             this.props.toggleOnboardingModal();
-            console.log(this.props.isOnboardingModalOpen)
-            // comment below while testing close modal
-            console.log('Add user INfO');
             this.props.addUserInfo({variables:{_eq:userID,blood_group:this.state.bloodGroup,district:this.state.district, phone: this.state.phoneNumber, pin_code: this.state.pincode, recovered_on:this.state.recoveredOn, social_link:this.state.socialLink,social_type:this.state.socialType,state:this.state.state}});
             store.addNotification({
                 title: "Onboarding Successfull",
@@ -85,7 +78,6 @@ export default class ModalOnboarding extends Component{
                   onScreen: true
                 }
               });
-            console.log(store);
         }
     },(error) => console.log(error))
     .catch((error) => {

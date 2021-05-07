@@ -49,7 +49,6 @@ function Header(props){
             localStorage.setItem("accessToken",token);
           } catch (e) {
             console.error(e);
-            console.log("Access Token not recieved")
           }
         })();
       }, [getAccessTokenSilently]);

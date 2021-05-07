@@ -37,8 +37,6 @@ export default class ModalRequest extends Component{
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-        console.log(name,'changed',value,value.length);
-        console.log(this.props.donor.id,this.state.donorID);
         this.setState({
           [name]: value
         });

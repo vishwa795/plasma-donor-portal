@@ -56,7 +56,7 @@ class Main extends Component{
     }
 
     setInitInputTaken = (value,bloodSelected,stateSelected) => {
-      this.setState({initInputTaken:true},()=>console.log(this.state.initInputTaken));
+      this.setState({initInputTaken:true});
       localStorage.setItem('initInputTaken',true);
       localStorage.setItem('bloodSelected',JSON.stringify(bloodSelected));
       localStorage.setItem('stateSelected',stateSelected);
@@ -67,9 +67,7 @@ class Main extends Component{
         const {isAuthenticated,user} = this.props.auth0;
         if(isAuthenticated){
           localStorage.setItem('user-id',user.sub);
-          console.log('User Details have been stored!');
         }
-        console.log("Authenticated?",isAuthenticated);
 
         return(
             <React.Fragment>

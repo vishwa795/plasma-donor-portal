@@ -24,7 +24,6 @@ const RenderCards = ({blood,state,toggleRequestModal,setRequestModalDonor}) =>{
     );
     }
     if (error){console.log(error); return <div className="text-center">An Error Occured</div>};
-    console.log(data);
     if(data.users.length===0){
         return(
             <div>
@@ -166,7 +165,6 @@ function Home(props){
         </div>
     )}
     //if (error){return "An Error Occured"+error}
-    console.log("userStatus : ",userStatus)
     return(
         <div className="container-fluid mt-3">
                 <FormGroup>
