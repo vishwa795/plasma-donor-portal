@@ -9,6 +9,7 @@ import { useMutation } from '@apollo/client';
 import {GET_ALL_DONOR,ADD_USER_INFO,ADD_NEW_REQUEST,CHECK_USER_STATUS} from '../Graphql/queries'
 import ModalOnboarding from './OnboardingModalComponent';
 import ModalRequest from './RequestModalComponent';
+import Typist from 'react-typist';
 
 const RenderCards = ({blood,state,toggleRequestModal,setRequestModalDonor}) =>{
    
@@ -17,8 +18,8 @@ const RenderCards = ({blood,state,toggleRequestModal,setRequestModalDonor}) =>{
     if (loading){
     return(
         <div>
-            <Skeleton duration={2} height={150} /> 
-            <Skeleton duration={2} count={3}/>
+            <Skeleton duration={0.5} height={150} />
+            <Skeleton duration={0.5} count={3}/>
         </div>
     );
     }
@@ -28,7 +29,7 @@ const RenderCards = ({blood,state,toggleRequestModal,setRequestModalDonor}) =>{
         return(
             <div>
                 <div className="text-center mb-1">
-                    <img src='./NoResults.jpg' className="img-fluid noresults-img" />
+                    <img src='./NoResults.jpg' className="img-fluid noresults-img" alt="No Results Vector" />
                 </div>
             <div className="text-center">
             <h6>No Results Found, Try selecting a different filter or Check again later</h6><br></br><br></br>
@@ -106,15 +107,39 @@ function Home(props){
 
     var allBloodGroups = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
     const [popoverOpen,setIsPopoverOpen] = React.useState(false);
-    var [bloodSelected,setBloodSelected] = React.useState(allBloodGroups);
+
+    var bloodSelectedInStorage  = allBloodGroups;
+    if(localStorage.getItem('bloodSelected')!=null){
+        bloodSelectedInStorage = JSON.parse(localStorage.getItem('bloodSelected'));
+    }
+    var [bloodSelected,setBloodSelectedHook] = React.useState(bloodSelectedInStorage);
+
+    const setBloodSelected = (bloodGroup) =>{
+        localStorage.setItem('bloodSelected',JSON.stringify(bloodGroup));
+        setBloodSelectedHook(bloodGroup);
+    } 
 
     var [isBloodOpen,setBloodOpen] = React.useState(false)
     const toggleBlood = () => setBloodOpen(prevState => !prevState);
 
-    var [stateSelected,setStateSelected] = React.useState("Select State");
-    var [isStateOpen,setStateOpen] = React.useState(false);
+    var [isBloodOpenModal,setBloodOpenModal] = React.useState(false)
+    const toggleBloodModal = () => setBloodOpenModal(!isBloodOpenModal);
 
+    var stateSelectedInStorage = "Select State";
+    if(localStorage.getItem('stateSelected')!=null){
+        stateSelectedInStorage = localStorage.getItem('stateSelected');
+    }
+    var [stateSelected,setStateSelectedHook] = React.useState(stateSelectedInStorage);
+    const setStateSelected = (state) =>{
+        localStorage.setItem('stateSelected',state);
+        setStateSelectedHook(state);
+    }
+
+    var [isStateOpen,setStateOpen] = React.useState(false);
     var toggleStateDropdown = ()=> setStateOpen(!isStateOpen);
+
+    var [isStateOpenModal,setStateOpenModal] = React.useState(false);
+    var toggleStateDropdownModal = ()=> setStateOpenModal(!isStateOpenModal);
 
     const [addUserInfo, { data }] = useMutation(ADD_USER_INFO,{
         onError: (err) => {
@@ -204,8 +229,69 @@ function Home(props){
             <ModalRequest isRequestModalOpen={isRequestModalOpen} toggleRequestModal={toggleRequestModal} 
             donor={requestModalDonor} addNewRequest={addNewRequest}
             />
+            <Modal isOpen={!props.initInputTaken}>
+                <ModalBody className="text-light text-center">
+                    <div className="mb-4">
+                        <Typist cursor={{
+                            show: false,
+                            blink: false,
+                            element: '',
+                            hideWhenDone: true,
+                            hideWhenDoneDelay: 0,
+                        }}>
+                        <h3 className="text-success">Welcome to Plasma-19 India.</h3>
+                        <h5> We help Plasma Donors connect with people who are sufferring from Covid-19 and require Plasma for their Treatments.</h5>
+                        </Typist>
+                    </div>
+                    <div className="text-center">
+                    <FormGroup>
+                        <Label for="bloodGroupDropDown"><h5 className="d-sm-inline">Enter Blood Group</h5></Label>
+                        <Dropdown isOpen={isBloodOpenModal} id="bloodGroupDropDown" toggle={toggleBloodModal} className="d-sm-inline ml-sm-2">
+                                <DropdownToggle caret>
+                                    {bloodSelected.length<=1?
+                                    bloodSelected :
+                                    "All"}
+                                </DropdownToggle>
+                                <DropdownMenu>
+                                    {allBloodGroups.map((bloodGroup)=><DropdownItem onClick={()=>setBloodSelected([bloodGroup])}>{bloodGroup}</DropdownItem>)}
+                                    <DropdownItem onClick={()=>setBloodSelected(allBloodGroups)}>All</DropdownItem>
+                                </DropdownMenu>
+                        </Dropdown>
+                        </FormGroup>
+                        <FormGroup>
+                        <Label for="stateDropdown"><h5>Enter State</h5></Label>
+                        <Dropdown isOpen={isStateOpenModal} color="primary" id="stateDropdown" toggle={toggleStateDropdownModal} className="d-sm-inline ml-sm-2">
+                                <DropdownToggle caret>
+                                    {stateSelected}
+                                </DropdownToggle>
+                                <DropdownMenu modifiers={{
+                                    setMaxHeight: {
+                                        enabled: true,
+                                        order: 890,
+                                        fn: (data) => {
+                                        return {
+                                            ...data,
+                                            styles: {
+                                            ...data.styles,
+                                            overflow: 'auto',
+                                            maxHeight: '200px',
+                                            },
+                                        };
+                                        },
+                                    },
+                                    }}>
+                                    {
+                                        States.map((state)=><DropdownItem onClick={()=>setStateSelected(state.name)}>{state.name}</DropdownItem>)
+                                    }
+                                </DropdownMenu>
+                        </Dropdown>
+                        </FormGroup>
+                        {stateSelected!=='Select State' && <Button onClick={()=>props.setInitInputTaken(true,bloodSelected,stateSelected)} color="success" outline>Check for Donors</Button>}
+                        </div>
+                </ModalBody>
+            </Modal>
             <div className="toast-notification">
-                <Toast className="text-center" isOpen={showToast}>
+                <Toast className="text-center" isOpen={showToast} className="bg-light">
                     <ToastHeader toggle={toggleToast}>Register as a donor</ToastHeader>
                     <ToastBody>
                                 Please register on plasma19 india as a donor by pressing the Login button at the top of the page.For understanding more about being a donor check out our FAQ section.
@@ -214,9 +300,6 @@ function Home(props){
                     <ToastBody>
                                 None of your contact information will be revealed without your permission.After logging in as a donor each request will be sent to your email where you can choose to accept and share your information only with the requesting party.  
                     </ToastBody>
-                </Toast>
-                <Toast className="text-center" isOpen={showToast}>
-                   
                 </Toast>
             </div>
         </div>

@@ -45,9 +45,23 @@ class Main extends Component{
     constructor(props){
         super(props);
         this.state={
-            user:null
+            user:null,
+            initInputTaken:true,
         }
     }
+    componentDidMount(){
+      if(localStorage.getItem('initInputTaken') === null){
+        this.setState({initInputTaken:false});
+      }
+    }
+
+    setInitInputTaken = (value,bloodSelected,stateSelected) => {
+      this.setState({initInputTaken:true},()=>console.log(this.state.initInputTaken));
+      localStorage.setItem('initInputTaken',true);
+      localStorage.setItem('bloodSelected',JSON.stringify(bloodSelected));
+      localStorage.setItem('stateSelected',stateSelected);
+    }
+
     setUserInfo = (userInfo) => this.setState({user:userInfo});
     render(){
         const {isAuthenticated,user} = this.props.auth0;
@@ -65,7 +79,7 @@ class Main extends Component{
                  
                     <Route path="/about" exact component={(props)=><About {...props} />} />
                     <Route path="/faq" exact component={(props)=><FAQs {...props} />} />
-                    <Route path="/" component={(props)=><Home showNotification={true} />} />
+                    <Route path="/" component={(props)=><Home initInputTaken={this.state.initInputTaken} setInitInputTaken={this.setInitInputTaken} />} />
                     <Redirect to="/" />
                     
                 </Switch>
