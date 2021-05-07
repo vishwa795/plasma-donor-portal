@@ -49,11 +49,12 @@ class Main extends Component{
         }
     }
     setUserInfo = (userInfo) => this.setState({user:userInfo});
-    componentDidMount(){
-        
-    }
     render(){
-        const {isAuthenticated} = this.props.auth0;
+        const {isAuthenticated,user} = this.props.auth0;
+        if(isAuthenticated){
+          localStorage.setItem('user-id',user.sub);
+          console.log('User Details have been stored!');
+        }
         console.log("Authenticated?",isAuthenticated);
 
         return(
@@ -64,7 +65,7 @@ class Main extends Component{
                  
                     <Route path="/about" exact component={(props)=><About {...props} />} />
                     <Route path="/faq" exact component={(props)=><FAQs {...props} />} />
-                    <Route path="/:page?" component={(props)=><Home {...props} />} />
+                    <Route path="/" component={(props)=><Home showNotification={true} />} />
                     <Redirect to="/" />
                     
                 </Switch>

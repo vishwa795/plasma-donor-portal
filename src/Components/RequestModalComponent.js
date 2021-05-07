@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {Row,Col,Button,Modal, ModalBody, Form, FormGroup,Input,Card,CardBody, Label,Popover,PopoverBody,PopoverHeader} from 'reactstrap';
 import {AiOutlineExclamationCircle} from 'react-icons/ai';
+import { store } from 'react-notifications-component';
 
 export default class ModalRequest extends Component{
     constructor(props){
@@ -109,6 +110,19 @@ export default class ModalRequest extends Component{
                 //TODOS -- add requester mutation here
                 this.props.addNewRequest({variables:{donor_id:this.props.donor.id,req_blood_group:this.state.requesterBloodGroup,req_email:requesterEmail,req_hospital:hospitalName,req_message:this.state.requesterCustomMessage,req_name:requesterName,req_phone:requesterPhoneNumber,req_hospital_pin_code:hospitalPincode,req_hospital_district:res[0].PostOffice[0].District,req_hospital_address:hospitalAddress,req_hospital_state:res[0].PostOffice[0].State}});
                 this.props.toggleRequestModal();
+                store.addNotification({
+                    title: "Success",
+                    message: `Your Plasma Request with ${this.props.donor.name} was successfull and you will recieve further information about this requests via Emails on the Email ID that you provided!`,
+                    type: "success",
+                    insert: "top",
+                    container: "top-right",
+                    animationIn: ["animate__animated", "animate__fadeIn"],
+                    animationOut: ["animate__animated", "animate__fadeOut"],
+                    dismiss: {
+                      duration: 10000,
+                      onScreen: true
+                    }
+                  });
             }
         })
         .catch((error) => {

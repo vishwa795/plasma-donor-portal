@@ -1,7 +1,7 @@
 import React, { Component, useEffect,useState } from 'react';
-import {Row,Col,Card,CardBody,Toast, ToastBody, ToastHeader,CardTitle,Button,CardFooter, Container,Modal, ModalBody, Form, FormGroup,Input, Label,Popover,PopoverBody,PopoverHeader} from 'reactstrap';
+import {Row,Col,Card,CardBody,Toast, ToastBody, ToastHeader,CardTitle,Button,CardFooter, Container,Modal, ModalBody, Form, FormGroup,Input, Label,Popover,PopoverBody,PopoverHeader,Spinner} from 'reactstrap';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import {AiOutlineExclamationCircle} from 'react-icons/ai';
+import Skeleton from 'react-loading-skeleton';
 import {States} from '../shared/exampleData';
 import { useQuery } from '@apollo/client';
 import {useAuth0} from '@auth0/auth0-react';
@@ -14,14 +14,26 @@ const RenderCards = ({blood,state,toggleRequestModal,setRequestModalDonor}) =>{
    
     // Making graphql query
     const { loading, error, data } = useQuery(GET_ALL_DONOR,{variables: { blood,state },});
-    if (loading) return <div className="text-center">Loading...</div>;
+    if (loading){
+    return(
+        <div>
+            <Skeleton duration={2} height={150} /> 
+            <Skeleton duration={2} count={3}/>
+        </div>
+    );
+    }
     if (error){console.log(error); return <div className="text-center">An Error Occured</div>};
     console.log(data);
     if(data.users.length===0){
         return(
+            <div>
+                <div className="text-center mb-1">
+                    <img src='./NoResults.jpg' className="img-fluid noresults-img" />
+                </div>
             <div className="text-center">
             <h6>No Results Found, Try selecting a different filter or Check again later</h6><br></br><br></br>
             <p>Please share this site as much as you can, so that we can get enough donors to span across the country and no-one gets empty result.<br></br></p>
+            </div>
             </div>
         )
     }
@@ -77,11 +89,10 @@ const RenderCards = ({blood,state,toggleRequestModal,setRequestModalDonor}) =>{
 
 
 function Home(props){
+    const {isAuthenticated} = useAuth0();
 
-    const {page} = props.match.params;
     const [isOnboardingModalOpen,setIsOnBoardingModalOpen] = React.useState(true);
     const toggleOnboardingModal = () => setIsOnBoardingModalOpen(!isOnboardingModalOpen);
-
 
     const [isRequestModalOpen,setIsRequestModalOpen] = React.useState(false);
     const toggleRequestModal = ()=> setIsRequestModalOpen(!isRequestModalOpen);
@@ -93,14 +104,14 @@ function Home(props){
         id:1
     });
 
-
+    var allBloodGroups = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
     const [popoverOpen,setIsPopoverOpen] = React.useState(false);
-    var [bloodSelected,setBloodSelected] = React.useState(["Select Blood Group"])
+    var [bloodSelected,setBloodSelected] = React.useState(allBloodGroups);
 
     var [isBloodOpen,setBloodOpen] = React.useState(false)
     const toggleBlood = () => setBloodOpen(prevState => !prevState);
 
-    var [stateSelected,setStateSelected] = React.useState("State");
+    var [stateSelected,setStateSelected] = React.useState("Select State");
     var [isStateOpen,setStateOpen] = React.useState(false);
 
     var toggleStateDropdown = ()=> setStateOpen(!isStateOpen);
@@ -113,7 +124,6 @@ function Home(props){
         onError: (err) => {
             console.log(err);
         }});
-    const {isAuthenticated} = useAuth0();
     const [showToast, setShowToast] = useState( isAuthenticated ? false : true);
     const toggleToast = () => setShowToast(!showToast);
     let showOnBoarding = true;
@@ -123,19 +133,22 @@ function Home(props){
             }
         }
     const {data:userStatus,loading} =useQuery(CHECK_USER_STATUS,{variables:{"user_id":localStorage.getItem("user-id")}})
-    if (loading) { return "Loading..."}
+    if (loading) { return(
+        <div className="h-100">
+            <div className="h-100 text-center mt-5 pt-5">
+            <Spinner className="align-items-center" color="dark" />
+            </div>
+        </div>
+    )}
     //if (error){return "An Error Occured"+error}
     console.log("userStatus : ",userStatus)
-
-    var allBloodGroups = ["A+","A-","B+","B-","AB+","AB-","O+","O-"];
     return(
-        <div className="container-fluid mt-2">
-            
-            <Row>
-            <Col md={2} sm={5}>
+        <div className="container-fluid mt-3">
                 <FormGroup>
-                    <Label for="bloodGroupDropDown"><h5>Blood Group</h5></Label>
-                    <Dropdown isOpen={isBloodOpen} id="bloodGroupDropDown" toggle={toggleBlood}>
+                    <Row>
+                    <Col sm={'auto'}>
+                    <Label for="bloodGroupDropDown" className="d-sm-inline"><h5 className="d-sm-inline">Blood Group</h5></Label>
+                    <Dropdown isOpen={isBloodOpen} id="bloodGroupDropDown" toggle={toggleBlood} className="d-sm-inline ml-sm-2">
                             <DropdownToggle caret>
                                 {bloodSelected.length<=1?
                                 bloodSelected :
@@ -144,42 +157,40 @@ function Home(props){
                             <DropdownMenu>
                                 {allBloodGroups.map((bloodGroup)=><DropdownItem onClick={()=>setBloodSelected([bloodGroup])}>{bloodGroup}</DropdownItem>)}
                                 <DropdownItem onClick={()=>setBloodSelected(allBloodGroups)}>All</DropdownItem>
-                                
                             </DropdownMenu>
                     </Dropdown>
-                </FormGroup>
-            </Col>
-            <Col md={2} sm={5}>
-            <FormGroup>
-                <Label for="stateDropdown"><h5>State</h5></Label>
-                <Dropdown color="success" isOpen={isStateOpen} id="stateDropdown" toggle={toggleStateDropdown}>
-                        <DropdownToggle caret>
-                            {stateSelected}
-                        </DropdownToggle>
-                        <DropdownMenu modifiers={{
-                            setMaxHeight: {
-                                enabled: true,
-                                order: 890,
-                                fn: (data) => {
-                                return {
-                                    ...data,
-                                    styles: {
-                                    ...data.styles,
-                                    overflow: 'auto',
-                                    maxHeight: '200px',
+                    </Col>
+                    <Col sm={'auto'}>
+                    <Label for="stateDropdown" className="d-sm-inline"><h5 className='d-sm-inline'>State</h5></Label>
+                    <Dropdown color="success" isOpen={isStateOpen} id="stateDropdown" toggle={toggleStateDropdown} className="d-sm-inline ml-sm-2">
+                            <DropdownToggle caret>
+                                {stateSelected}
+                            </DropdownToggle>
+                            <DropdownMenu modifiers={{
+                                setMaxHeight: {
+                                    enabled: true,
+                                    order: 890,
+                                    fn: (data) => {
+                                    return {
+                                        ...data,
+                                        styles: {
+                                        ...data.styles,
+                                        overflow: 'auto',
+                                        maxHeight: '200px',
+                                        },
+                                    };
                                     },
-                                };
                                 },
-                            },
-                            }}>
-                            {
-                                States.map((state)=><DropdownItem onClick={()=>setStateSelected(state.key)}>{state.name}</DropdownItem>)
-                            }
-                        </DropdownMenu>
-                </Dropdown>
+                                }}>
+                                {
+                                    States.map((state)=><DropdownItem onClick={()=>setStateSelected(state.name)}>{state.name}</DropdownItem>)
+                                }
+                            </DropdownMenu>
+                    </Dropdown>
+                    </Col>
+                    </Row>
             </FormGroup>
-            </Col>
-            </Row>
+            <hr />
             <Row className="mt-3">
                 <Col sm={0} md={3}>
                 </Col>

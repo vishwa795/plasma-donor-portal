@@ -1,6 +1,6 @@
 import React,{useEffect} from 'react';
 import {Navbar,NavbarBrand,NavbarToggler,Collapse,Nav,NavItem,NavLink,Container,Button,Modal,ModalBody,Row,Col} from 'reactstrap';
-import {AiOutlineLogin,AiOutlineLogout} from 'react-icons/ai';
+import {AiOutlineInfoCircle, AiOutlineLogin,AiOutlineLogout} from 'react-icons/ai';
 import {TiCancel} from 'react-icons/ti';
 import {BiHelpCircle} from 'react-icons/bi';
 import {FcAbout} from 'react-icons/fc'
@@ -32,7 +32,7 @@ function Header(props){
     const domain = process.env.REACT_APP_AUTH0_DOMAIN;
     const [isLoginModalOpen,setIsLoginModalOpen] = React.useState(false);
     const toggleModal = () => setIsLoginModalOpen(!isLoginModalOpen);
-    const {isAuthenticated,loginWithRedirect,user,getAccessTokenSilently,logout} = useAuth0();
+    const {isAuthenticated,loginWithRedirect,getAccessTokenSilently,logout} = useAuth0();
 
     console.log("Deacti called init : "+called)
     if (loading){
@@ -45,8 +45,6 @@ function Header(props){
         console.log("Mutation response:",data)
     }
 
-    if(user)
-    localStorage.setItem('user-id',user.sub)
     useEffect(() => {
         (async () => {
             //console.log('I am here')
@@ -72,7 +70,7 @@ function Header(props){
                     <Nav className="ml-auto" navbar>
                     <NavItem>
                             <Link to="/about">
-                            <Button  className="navbutton mr-2" ><FcAbout size="20px" /> About </Button>
+                            <Button  className="navbutton mr-2" ><AiOutlineInfoCircle size="20px" /> About </Button>
                             </Link>
                         </NavItem>
                         <NavItem>

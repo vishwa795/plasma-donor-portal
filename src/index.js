@@ -1,13 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-notifications-component/dist/theme.css'
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import ReactNotification from 'react-notifications-component'
 
 ReactDOM.render(
   <React.StrictMode>
+    <ReactNotification isMobile={true} />
     <App />
   </React.StrictMode>,
   document.getElementById('root')
