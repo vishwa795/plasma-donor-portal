@@ -5,7 +5,6 @@ import faq from '../shared/faq.js'
 
 const RenderCards = (props) =>{
     return faq.map((qa)=>{
-        console.log(qa)
         return(
             <Container className="pt-5 pb-2">
                 <div className="question p-3" style={{backgroundColor: '#f8f5f1', border: 'none', borderLeftStyle: 'solid', borderLeftWidth: '.5rem', borderLeftColor: '#f8a488'}}>

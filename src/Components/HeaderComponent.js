@@ -14,18 +14,17 @@ import {DEACTIVATE_USER} from "../Graphql/queries";
 
 function GetUserDetail(props){
     const auth0Id = localStorage.getItem("user-id");
-    console.log(auth0Id)
         const { loading, error, data } = useQuery(GET_USER_DETAILS,{variables: { auth0Id },});
         if(error){
         }
         else if(data){
-            console.log(data,"is the data");
             localStorage.setItem('user',data);
         }
 }
 
 function Header(props){
     GetUserDetail();
+    const [isDeactivateModalOpen,setIsDeactivateModalOpen] = React.useState(false);
     const [deactivateUser, { data,called,error,loading }] = useMutation(DEACTIVATE_USER);
     const [isNavOpen,setIsNavOpen] = React.useState(false);
     const toggleNav = () => setIsNavOpen(!isNavOpen);
@@ -34,24 +33,19 @@ function Header(props){
     const toggleModal = () => setIsLoginModalOpen(!isLoginModalOpen);
     const {isAuthenticated,loginWithRedirect,getAccessTokenSilently,logout} = useAuth0();
 
-    console.log("Deacti called init : "+called)
+    
     if (loading){
         console.log("waiting for deact to complete")
     }
     if (error){
         console.log(error)
     }
-    if(data){
-        console.log("Mutation response:",data)
-    }
+    
 
     useEffect(() => {
         (async () => {
-            //console.log('I am here')
           try {
-              //console.log('Try is Getting executed')
             const token = await getAccessTokenSilently();
-            //console.log(token," Access Token");
             localStorage.setItem("accessToken",token);
           } catch (e) {
             console.error(e);
@@ -80,7 +74,7 @@ function Header(props){
                         </NavItem>
                         <NavItem>
                             
-                            { isAuthenticated && <Button className="navbutton mr-2" onClick={()=>{deactivateUser({variables:{"user_id":localStorage.getItem("user-id")}});console.log("Deacti called : "+called)}} ><TiCancel size="20px" />Deactivate</Button>}
+                            { isAuthenticated && <Button className="navbutton mr-2" onClick={()=>setIsDeactivateModalOpen(true)}><TiCancel size="20px" />Deactivate</Button>}
                         </NavItem>
                         <NavItem>
                             {
@@ -93,6 +87,24 @@ function Header(props){
                 </Collapse>
                 </Container>
             </Navbar>
+
+            <div>
+                <Modal isOpen={isDeactivateModalOpen} >
+                        <ModalBody className="text-light">
+                            <h5>Deactive will permanently remove your information from Plasma19India.org and will not be listed any more. Are you sure you want to deactive ? 
+                            </h5>
+                            <div className="text-center">
+                            <Button color="danger" className="mr-5" onClick={()=>{deactivateUser({variables:{"user_id":localStorage.getItem("user-id")}});logout({ returnTo: window.location.origin });}}>
+                                Agree 
+                            </Button>
+                            <Button color="primary" onClick={()=>setIsDeactivateModalOpen(false)}>
+                                Cancel
+                            </Button>
+                            </div>
+                        </ModalBody>
+
+                </Modal>
+            </div>
         </div>
     )
 }

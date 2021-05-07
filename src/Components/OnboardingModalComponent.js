@@ -48,9 +48,12 @@ export default class ModalOnboarding extends Component{
         else{
             this.setState({pincodeError:false})
         }
+        const todayDate = new Date()
         const recoveredOn = this.state.recoveredOn;
-        if(recoveredOn==null || recoveredOn.length!=10){
-            this.setState({recoveredOnError:false})
+        const temp = new Date(recoveredOn)
+        
+        if(recoveredOn==null || recoveredOn.length!=10 || temp.getTime()>todayDate.getTime() ){
+            this.setState({recoveredOnError:true})
         }
         else{
             this.setState({recoveredOnError:false})

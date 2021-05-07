@@ -240,10 +240,11 @@ function Home(props){
                             hideWhenDoneDelay: 0,
                         }}>
                         <h3 className="text-success">Welcome to Plasma-19 India.</h3>
-                        <h5> We help Plasma Donors connect with people who are sufferring from Covid-19 and require Plasma for their Treatments.</h5>
+                        <h5> We help Plasma Donors connect with people who are sufferring from Covid-19 and require Plasma for their treatment.</h5>
                         </Typist>
                     </div>
                     <div className="text-center">
+                        <h5>Search for Donors :</h5><br/>
                     <FormGroup>
                         <Label for="bloodGroupDropDown"><h5 className="d-sm-inline">Enter Blood Group</h5></Label>
                         <Dropdown isOpen={isBloodOpenModal} id="bloodGroupDropDown" toggle={toggleBloodModal} className="d-sm-inline ml-sm-2">
@@ -294,11 +295,11 @@ function Home(props){
                 <Toast className="text-center" isOpen={showToast} className="bg-light">
                     <ToastHeader toggle={toggleToast}>Register as a donor</ToastHeader>
                     <ToastBody>
-                                Please register on plasma19 india as a donor by pressing the Login button at the top of the page.For understanding more about being a donor check out our FAQ section.
+                                Please register on plasma19 india as a donor by pressing the Donor-Signup button at the top of the page.For understanding more about being a donor check out our FAQ section.
                     </ToastBody>
                     <ToastHeader >We Respect your privacy</ToastHeader>
                     <ToastBody>
-                                None of your contact information will be revealed without your permission.After logging in as a donor each request will be sent to your email where you can choose to accept and share your information only with the requesting party.  
+                                None of your contact information will be revealed without your permission.After logging in as a donor each plasma request will be sent to your email where you can choose to accept and share your information only with the requesting party.We also limit the number of email notifications a donor gets to 25/day.  
                     </ToastBody>
                 </Toast>
             </div>

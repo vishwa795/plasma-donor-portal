@@ -36,19 +36,20 @@ export const CHECK_USER_STATUS = gql`query CheckUserStatus($user_id: String = ""
   }`
 
 export const GET_ALL_DONOR = gql`query FetchAllDonors($blood: [String!] = "", $state: String = "") {
-    users(where: {status: {_eq: "true"}, blood_group: {_in: $blood}, state: {_eq: $state}}) {
-      user_id
-      state
-      pin_code
-      picture
-      name
-      id
-      district
-      blood_group
-      recovered_on
-      updated_at
-    }
-  }`
+  users(where: {status: {_eq: "true"}, blood_group: {_in: $blood}, state: {_eq: $state}}, order_by: {email_count: asc}) {
+    user_id
+    state
+    pin_code
+    picture
+    name
+    id
+    district
+    blood_group
+    recovered_on
+    updated_at
+  }
+}
+`
 
 
 
@@ -61,7 +62,7 @@ export const ADD_USER_INFO = gql`mutation AddUserInfo($_eq: String = "", $blood_
 
 
 export const DEACTIVATE_USER = gql`mutation DeactivateUser($user_id: String!) {
-    update_users(where: {user_id: {_eq: $user_id}}, _set: {status: "false"}) {
+    update_users(where: {user_id: {_eq: $user_id}}, _set: {status: "onboarding"}) {
       affected_rows 
     }
   }`
