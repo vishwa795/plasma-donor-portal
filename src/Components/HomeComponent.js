@@ -1,5 +1,5 @@
-import React, { Component, useEffect,useState } from 'react';
-import {Row,Col,Card,CardBody,Toast, ToastBody, ToastHeader,CardTitle,Button,CardFooter, Container,Modal, ModalBody, Form, FormGroup,Input, Label,Popover,PopoverBody,PopoverHeader,Spinner} from 'reactstrap';
+import React, {useState } from 'react';
+import {Row,Col,Card,CardBody,Toast, ToastBody, ToastHeader,Button,CardFooter, Container,Modal, ModalBody, FormGroup, Label,Spinner} from 'reactstrap';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import Skeleton from 'react-loading-skeleton';
 import {States} from '../shared/exampleData';
@@ -44,7 +44,7 @@ const RenderCards = ({blood,state,toggleRequestModal,setRequestModalDonor}) =>{
                             <Row>
                                 <Col sm={12} md={4}>
                                     <div className="text-center">
-                                    <img className="img-fluid designed-card-img" src={donor.picture} alt="Profile Picture" />
+                                    <img className="img-fluid designed-card-img" src={donor.picture} alt="Profile" />
                                     </div>
                                 </Col>
                                 <Col sm={8} md={4} className="border-right">

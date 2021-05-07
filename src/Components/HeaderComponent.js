@@ -1,20 +1,19 @@
 import React,{useEffect} from 'react';
-import {Navbar,NavbarBrand,NavbarToggler,Collapse,Nav,NavItem,NavLink,Container,Button,Modal,ModalBody,Row,Col} from 'reactstrap';
+import {Navbar,NavbarBrand,NavbarToggler,Collapse,Nav,NavItem,Container,Button,Modal,ModalBody} from 'reactstrap';
 import {AiOutlineInfoCircle, AiOutlineLogin,AiOutlineLogout} from 'react-icons/ai';
 import {TiCancel} from 'react-icons/ti';
 import {BiHelpCircle} from 'react-icons/bi';
-import {FcAbout} from 'react-icons/fc'
 import { useQuery } from '@apollo/client';
 import {GET_USER_DETAILS} from '../Graphql/queries';
 import {useAuth0} from '@auth0/auth0-react';
 import {Link} from 'react-router-dom';
-import { useMutation,Mutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import {DEACTIVATE_USER} from "../Graphql/queries";
 
 
 function GetUserDetail(props){
     const auth0Id = localStorage.getItem("user-id");
-        const { loading, error, data } = useQuery(GET_USER_DETAILS,{variables: { auth0Id },});
+        const { error, data } = useQuery(GET_USER_DETAILS,{variables: { auth0Id },});
         if(error){
         }
         else if(data){
@@ -29,8 +28,6 @@ function Header(props){
     const [isNavOpen,setIsNavOpen] = React.useState(false);
     const toggleNav = () => setIsNavOpen(!isNavOpen);
     const domain = process.env.REACT_APP_AUTH0_DOMAIN;
-    const [isLoginModalOpen,setIsLoginModalOpen] = React.useState(false);
-    const toggleModal = () => setIsLoginModalOpen(!isLoginModalOpen);
     const {isAuthenticated,loginWithRedirect,getAccessTokenSilently,logout} = useAuth0();
 
     

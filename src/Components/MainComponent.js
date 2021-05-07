@@ -4,11 +4,7 @@ import Home from './HomeComponent';
 import Header from './HeaderComponent';
 import FAQs from './FAQsComponent'
 import About from './AboutComponent'
-import { useQuery } from '@apollo/client';
-import {GET_USER_DETAILS} from '../Graphql/queries';
 import { withAuth0 } from '@auth0/auth0-react';
-
-import {} from '@auth0/auth0-react';
 import { setContext } from 'apollo-link-context';
 import { ApolloClient, InMemoryCache, createHttpLink} from '@apollo/client';
 import { ApolloProvider } from '@apollo/client/react';

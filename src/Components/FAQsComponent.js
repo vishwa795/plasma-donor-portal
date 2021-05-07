@@ -1,5 +1,5 @@
 import React from 'react';
-import {Row,Col,Card,CardBody,CardTitle,Button,CardFooter, Container,Modal, ModalBody, Form, FormGroup,Input, Label} from 'reactstrap';
+import {Container} from 'reactstrap';
 
 import faq from '../shared/faq.js'
 
@@ -8,19 +8,19 @@ const RenderCards = (props) =>{
         return(
             <Container className="pt-5 pb-2">
                 <div className="question p-3" style={{backgroundColor: '#f8f5f1', border: 'none', borderLeftStyle: 'solid', borderLeftWidth: '.5rem', borderLeftColor: '#f8a488'}}>
-                    <h1>
+                    <h2>
                         <span className='pl-1 pr-4'>
-                            Q.
+                            <h1 className="d-inline">Q.</h1>
                         </span>
                         {qa.question}
-                    </h1>
+                    </h2>
                 </div>
                 <div className="answer p-3" style={{border: 'none', borderLeftStyle: 'solid', borderLeftWidth: '.5rem', borderLeftColor: '#f8f5f1', color: 'grey'}}>
                     <h1 className='d-inline pl-1 pr-4'>
                         A.
                     </h1>
                     <span className='d-inline'>
-                        {qa.answer}
+                        <h6 className="d-inline">{qa.answer}</h6>
                     </span>
                 </div>
             </Container>
