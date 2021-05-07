@@ -13,22 +13,22 @@ const faqs =  [
   {
     "id" : 3,
     "question":"Who can NOT donate plasma?",
-    "answer":"Pregnant women who have recovered form COVID-19 and people who have been vaccinated with any one of the COVID-19 vaccines cannot donate plasma."
+    "answer":"Pregnant women who have recovered form COVID-19 and people who have been vaccinated with any one of the COVID-19 vaccines such that 2weeks hasn't passed from the second dose cannot donate plasma."
   },
   {
     "id" : 4,
-    "question":"Who is benifitted?",
-    "answer":"People with moderate COVID-19 disease can retirive plasma, it has shown to reduce the risk of needing a ventiilator(O2 therapy) and mortality. It can be tried in severe & critical COVID-19 patients also.Research is still going on (Visit www.who.int for more info)."
+    "question":"Who is benefited?",
+    "answer":`People with moderate COVID-19 disease can retirive plasma, it has shown to reduce the risk of needing a ventilator(O2 therapy) and mortality. It can be tried in severe & critical COVID-19 patients also. Research is still going on (Visit www.who.int for more info).`
   },
   {
     "id" : 5,
-    "question":"Where can i donate?",
+    "question":"Where can I donate?",
     "answer":"Near by plasma donation center or the hospital having blood bank where the patient is admitted."
   },
   {
     "id" : 6,
     "question":"What should I know before plasma donation?",
-    "answer":"You will be screened for diseases like HIV and hepatitis.The whole process might take around 2-3 hours."
+    "answer":"You will be screened for diseases like HIV and hepatitis. The whole process might take around 2-3 hours."
   }
   
 ]
