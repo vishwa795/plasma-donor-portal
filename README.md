@@ -6,5 +6,5 @@ npm i
 ```
 # Here's the link to the website
 ```
-[https://www.plasma19india.org/](https://www.plasma19india.org/)
+[Plasma19 India](https://www.plasma19india.org/)
 ```
