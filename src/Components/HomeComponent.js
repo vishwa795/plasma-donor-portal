@@ -157,7 +157,8 @@ function Home(props){
                 showOnBoarding=false;
             }
         }
-    const {data:userStatus,loading} =useQuery(CHECK_USER_STATUS,{variables:{"user_id":localStorage.getItem("user-id")}})
+    
+    let {data:userStatus,loading,error} =useQuery(CHECK_USER_STATUS,{variables:{"user_id":localStorage.getItem("user-id")}})
     if (loading) { return(
         <div className="h-100">
             <div className="h-100 text-center mt-5 pt-5">
@@ -165,8 +166,17 @@ function Home(props){
             </div>
         </div>
     )}
-    //if (error){return "An Error Occured"+error}
+    // if (error){return "An Error Occured: "+error}
 
+    // sometimes auth0 has a delay to populate usertable and hence query may return empty user array
+    // hence we set default status to onboarding, if user isnt logged in then accesstoken wont be availabe for a db query
+    if (userStatus.users.length === 0 ){
+        console.log("user not found , defaulting to onboarding...")
+        userStatus = {
+            status:"onboarding"
+        }
+    }
+    
     return(
         <div className="container-fluid mt-3">
                 <FormGroup>
