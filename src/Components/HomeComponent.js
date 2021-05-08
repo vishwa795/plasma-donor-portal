@@ -10,6 +10,7 @@ import {GET_ALL_DONOR,ADD_USER_INFO,ADD_NEW_REQUEST,CHECK_USER_STATUS} from '../
 import ModalOnboarding from './OnboardingModalComponent';
 import ModalRequest from './RequestModalComponent';
 import Typist from 'react-typist';
+import { AiOutlineLogin} from 'react-icons/ai';
 
 const RenderCards = ({blood,state,toggleRequestModal,setRequestModalDonor}) =>{
    
@@ -89,7 +90,7 @@ const RenderCards = ({blood,state,toggleRequestModal,setRequestModalDonor}) =>{
 
 
 function Home(props){
-    const {isAuthenticated} = useAuth0();
+    const {isAuthenticated,loginWithRedirect} = useAuth0();
 
     const [isOnboardingModalOpen,setIsOnBoardingModalOpen] = React.useState(true);
     const toggleOnboardingModal = () => setIsOnBoardingModalOpen(!isOnboardingModalOpen);
@@ -165,6 +166,7 @@ function Home(props){
         </div>
     )}
     //if (error){return "An Error Occured"+error}
+
     return(
         <div className="container-fluid mt-3">
                 <FormGroup>
@@ -287,13 +289,19 @@ function Home(props){
                         </FormGroup>
                         {stateSelected!=='Select State' && <Button onClick={()=>props.setInitInputTaken(true,bloodSelected,stateSelected)} color="success" outline>Check for Donors</Button>}
                         </div>
+                        <hr className="bg-success"/>
+                        <Row >
+                            <div className="text-center mt-2 ml-auto mr-auto">
+                            Want to donate ? <Button className="navbutton-login" onClick={()=>loginWithRedirect()}><AiOutlineLogin size="20px"/><span> Donor SignUp </span></Button>
+                            </div>
+                        </Row>
                 </ModalBody>
             </Modal>
             <div className="toast-notification">
                 <Toast className="text-center" isOpen={showToast} className="bg-light">
                     <ToastHeader toggle={toggleToast}>Register as a donor</ToastHeader>
                     <ToastBody>
-                                Please register on plasma19 india as a donor by pressing the Donor-Signup button at the top of the page.For understanding more about being a donor check out our FAQ section.
+                            Please register on plasma19 india as a donor by pressing the Donor-Signup button at the top of the page.For understanding more about being a donor check out our FAQ section.
                     </ToastBody>
                     <ToastHeader >We Respect your privacy</ToastHeader>
                     <ToastBody>
