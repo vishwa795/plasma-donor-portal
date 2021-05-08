@@ -13,7 +13,7 @@ const faqs =  [
   {
     "id" : 3,
     "question":"Who can NOT donate plasma?",
-    "answer":"Pregnant women who have recovered form COVID-19 and people who have been vaccinated with any one of the COVID-19 vaccines such that 2weeks hasn't passed from the second dose cannot donate plasma."
+    "answer":"Pregnant women who have recovered form COVID-19 and people who have been vaccinated with any one of the COVID-19 vaccines cannot donate plasma."
   },
   {
     "id" : 4,
