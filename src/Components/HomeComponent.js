@@ -166,14 +166,16 @@ function Home(props){
         </div>
     )}
     if (error){return "An Error Occured: "+error}
+
     // sometimes auth0 has a delay to populate usertable and hence query may return empty user array
     // hence we set default status to onboarding, if user isnt logged in then accesstoken wont be availabe for a db query
-    if (userStatus===undefined || userStatus===null){
+    if (userStatus.users.length === 0 ){
         console.log("user not found , defaulting to onboarding...")
         userStatus = {
             status:"onboarding"
         }
     }
+    
     return(
         <div className="container-fluid mt-3">
                 <FormGroup>
