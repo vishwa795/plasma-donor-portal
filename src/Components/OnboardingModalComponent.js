@@ -16,7 +16,9 @@ export default class ModalOnboarding extends Component{
             socialLink:'',
             phoneNumberError:false,
             pincodeError:false,
-            recoveredOnError:false
+            recoveredOnError:false,
+            name:null,
+            nameError:false
         }
     }
 
@@ -56,15 +58,22 @@ export default class ModalOnboarding extends Component{
         else{
             this.setState({recoveredOnError:false})
         }
+
+        if(this.state.name==null){
+            this.setState({nameError:true});
+        }else{
+            this.setState({nameError:false})
+        }
+
     fetch(`https://api.postalpincode.in/pincode/${pincode}`)
     .then(res => res.json())
     .then(res=>{
         this.setState({district: res[0].PostOffice[0].District});
         this.setState({state:res[0].PostOffice[0].State});
         const userID = localStorage.getItem('user-id');
-        if(!this.state.phoneNumberError && !this.state.recoveredOnError && !this.state.pincodeError){
+        if(!this.state.phoneNumberError && !this.state.recoveredOnError && !this.state.pincodeError && !this.state.nameError){
             this.props.toggleOnboardingModal();
-            this.props.addUserInfo({variables:{_eq:userID,blood_group:this.state.bloodGroup,district:this.state.district, phone: this.state.phoneNumber, pin_code: this.state.pincode, recovered_on:this.state.recoveredOn, social_link:this.state.socialLink,social_type:this.state.socialType,state:this.state.state}});
+            this.props.addUserInfo({variables:{_eq:userID,name:this.state.name,blood_group:this.state.bloodGroup,district:this.state.district, phone: this.state.phoneNumber, pin_code: this.state.pincode, recovered_on:this.state.recoveredOn, social_link:this.state.socialLink,social_type:this.state.socialType,state:this.state.state}});
             store.addNotification({
                 title: "Onboarding Successfull",
                 message: `Thank You for providing us your details required. Rest assured your data is safe with us.`,
@@ -112,6 +121,13 @@ export default class ModalOnboarding extends Component{
                                 this.handleSubmit(event);
                                 }} >
                             <FormGroup>
+                                <Row className="mb-2">
+                                    <Col>
+                                        <Label className="text-warning" for="name"><h5>Name</h5></Label>
+                                        <Input type="text" name="name" id="name" placeholder="Enter Name" value={this.state.name} required />
+                                            {this.state.nameError && <p className="text-danger">Please Enter a Name</p>}
+                                    </Col>
+                                </Row>
                                 <Row>
                                     <Col md={6} sm={12} className="">
                                         <Label className="text-warning" for="phone"><h5>Phone Number</h5></Label>
@@ -134,6 +150,7 @@ export default class ModalOnboarding extends Component{
                                     </Col>
                                 </Row>
                             </FormGroup>
+                            
                             <Row>
                                 <Col sm={12} md={4}>
                                     <FormGroup>
@@ -144,20 +161,26 @@ export default class ModalOnboarding extends Component{
                                 </Col>
                                 <Col sm={12} md={8}>
                                     <FormGroup>
-                                        <Label className="text-warning" for="recoveredOn"><h5>Recovered / Vaccinated On <AiOutlineExclamationCircle size="20px" id="Popover1" onMouseOver={()=>this.props.setIsPopoverOpen(true)} onMouseLeave={()=>this.props.setIsPopoverOpen(false)} /></h5></Label>
+                                        <Label className="text-warning" for="recoveredOn"><h5>Recovered On <AiOutlineExclamationCircle size="20px" id="Popover1" onMouseOver={()=>this.props.setIsPopoverOpen(true)} onMouseLeave={()=>this.props.setIsPopoverOpen(false)} /></h5></Label>
                                         <Input type="date" name="recoveredOn" id="recoveredOn" value={this.state.recoveredOn} required />
-                                        <Popover placement="bottom" isOpen={this.props.popoverOpen} target="Popover1">
-                                            <PopoverHeader>Vaccination</PopoverHeader>
-                                            <PopoverBody>Please Enter the date on which you got 2nd dose of covid vaccine.</PopoverBody>
+                                        <Popover className="text-danger" placement="bottom" isOpen={this.props.popoverOpen} target="Popover1">
+                                            <PopoverHeader>Who can not donate?</PopoverHeader>
+                                            <PopoverBody>
+                                                <ul>
+                                                    <li> If you have ONLY been vaccinated and have not been infected refrain from registering.</li>
+                                                    <li> If you have never contracted the virus refrain from registering. </li> 
+                                                </ul>
+                                            </PopoverBody>
                                         </Popover>
                                         {this.state.recoveredOnError && <p className="text-danger">Please Enter a valid Date</p>}
                                     </FormGroup>
                                 </Col>
                             </Row>
+                          
                             <Row>
                                 <Col sm={12} md={6}>
                                     <FormGroup>
-                                        <Label for="socialType" className="text-warning"><h5>Social Account Type</h5></Label>
+                                        <Label for="socialType" className="text-warning"><h5>Social Account Type *</h5></Label>
                                         <Input type="select" name="socialType" id="socialType" value={this.state.socialType}>
                                             <option value="">None</option>
                                             <option value="facebook">Facebook</option>
@@ -169,9 +192,14 @@ export default class ModalOnboarding extends Component{
                                 </Col>
                                 <Col sm={12} md={6}>
                                     <FormGroup>
-                                        <Label for="socialLink" className="text-warning"><h5>Social Account Link</h5></Label>
+                                        <Label for="socialLink" className="text-warning"><h5>Social Account Link * </h5></Label>
                                         <Input type="url" name="socialLink" id="socialType" placeholder="Profile URL" value={this.state.socialLink} {...setRequired} />
                                     </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col className="text-info text-center">
+                                * Social media details above are optional
                                 </Col>
                             </Row>
                             <div className="text-center">
