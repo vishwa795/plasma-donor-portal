@@ -6,7 +6,7 @@ import {States} from '../shared/exampleData';
 import { useQuery } from '@apollo/client';
 import {useAuth0} from '@auth0/auth0-react';
 import { useMutation } from '@apollo/client';  
-import {GET_ALL_DONOR,ADD_USER_INFO,ADD_NEW_REQUEST,CHECK_USER_STATUS} from '../Graphql/queries'
+import {GET_ALL_DONOR,INSERT_DONOR,ADD_NEW_REQUEST,CHECK_USER_STATUS} from '../Graphql/queries'
 import ModalOnboarding from './OnboardingModalComponent';
 import ModalRequest from './RequestModalComponent';
 import Typist from 'react-typist';
@@ -77,7 +77,7 @@ const RenderCards = ({blood,state,toggleRequestModal,setRequestModalDonor}) =>{
                         </CardBody>
                         <CardFooter>
                             <div className="text-center text-muted">
-                                Recovered/Vaccinated on: {donor.recovered_on}
+                                Recovered On : {donor.recovered_on}
                             </div>
                         </CardFooter>
                     </Card>
@@ -141,7 +141,7 @@ function Home(props){
     var [isStateOpenModal,setStateOpenModal] = React.useState(false);
     var toggleStateDropdownModal = ()=> setStateOpenModal(!isStateOpenModal);
 
-    const [addUserInfo, { data }] = useMutation(ADD_USER_INFO,{
+    const [addDonor, { data,error }] = useMutation(INSERT_DONOR,{
         onError: (err) => {
             console.log(err);
         }});
@@ -225,7 +225,7 @@ function Home(props){
                     </Container>
                 </Col>
             </Row>
-            <ModalOnboarding isOnboardingModalOpen={isAuthenticated && userStatus && userStatus.users[0].status==="onboarding" && showOnBoarding } toggleOnboardingModal={toggleOnboardingModal} popoverOpen={popoverOpen} setIsPopoverOpen={setIsPopoverOpen} addUserInfo={addUserInfo} />
+            <ModalOnboarding isOnboardingModalOpen={isAuthenticated && userStatus && userStatus.users[0].status==="onboarding" && showOnBoarding } toggleOnboardingModal={toggleOnboardingModal} popoverOpen={popoverOpen} setIsPopoverOpen={setIsPopoverOpen} addDonor={addDonor} />
             <ModalRequest isRequestModalOpen={isRequestModalOpen} toggleRequestModal={toggleRequestModal} 
             donor={requestModalDonor} addNewRequest={addNewRequest}
             />

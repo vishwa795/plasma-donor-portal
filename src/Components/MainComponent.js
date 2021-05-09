@@ -64,7 +64,7 @@ class Main extends Component{
         if(isAuthenticated){
           localStorage.setItem('user-id',user.sub);
         }
-
+        
         return(
             <React.Fragment>
                 <ApolloProvider client={isAuthenticated?authdClient:unauthdClient}>

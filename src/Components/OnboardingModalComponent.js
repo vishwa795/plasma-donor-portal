@@ -12,15 +12,28 @@ export default class ModalOnboarding extends Component{
             district:"",
             state:"",
             recoveredOn:null,
-            socialType:'',
-            socialLink:'',
+            socialType:"",
+            socialLink:"",
             phoneNumberError:false,
             pincodeError:false,
             recoveredOnError:false,
             name:null,
-            nameError:false
+            nameError:false,
+            userType:null,
+            userTypeError:false,
+            isUserTypeOpen:false,
+            hospitalName:'',
+            hospitalNameError:false,
+            ishospitalNamePopoverOpen:false,
+            hospitalPincode:"",
+            hospitalPincode:false,
+            hospitalAddress:"",
+            hospitalAddressError:false
         }
     }
+
+    setHospitalNamePopover = (value) =>this.setState({ishospitalNamePopoverOpen:value})
+
 
     handleInputChange(event) {
         event.preventDefault();
@@ -52,7 +65,7 @@ export default class ModalOnboarding extends Component{
         const recoveredOn = this.state.recoveredOn;
         const temp = new Date(recoveredOn)
         
-        if(recoveredOn==null || recoveredOn.length!=10 || temp.getTime()>todayDate.getTime() ){
+        if(this.userType==="Donor" && (recoveredOn==null || recoveredOn.length!=10 || temp.getTime()>todayDate.getTime()) ){
             this.setState({recoveredOnError:true})
         }
         else{
@@ -65,15 +78,70 @@ export default class ModalOnboarding extends Component{
             this.setState({nameError:false})
         }
 
+        if(this.state.userType===null || this.state.userType===""){
+            this.setState({userTypeError:true});
+        }else{
+            this.setState({userTypeError:false})
+        }
+
+        // UserType Patient
+        if(this.state.userType==="Patient" && this.state.requesterEmail==="" ){
+            this.setState({requesterEmailError:true});
+        }else{
+            this.setState({userTypeError:false});
+        }
+
+        if(this.state.userType==="Patient" && this.state.hospitalName==="" ){
+            this.setState({hospitalNameError:true});
+        }else{
+            this.setState({hospitalNameError:false});
+        }
+
+        const hospitalPincode = this.state.pincode;
+        if(hospitalPincode.length!==6){
+            this.setState({hospitalPincodeError:true});
+        }
+        else{
+            this.setState({hospitalPincodeError:false})
+        }
+
+        const hospitalAddress = this.state.hospitalAddress;
+        if(hospitalAddress.length<10){
+            this.setState({hospitalAddressError:true});
+        }
+        else{
+            this.setState({hospitalAddressError:false});
+        }
+
+
+    console.log("Calling "+`https://api.postalpincode.in/pincode/${pincode}`)
     fetch(`https://api.postalpincode.in/pincode/${pincode}`)
     .then(res => res.json())
     .then(res=>{
         this.setState({district: res[0].PostOffice[0].District});
         this.setState({state:res[0].PostOffice[0].State});
         const userID = localStorage.getItem('user-id');
+        const vars = {
+            user_id:userID,
+            status:"true",
+            name:this.state.name,
+            blood_group:this.state.bloodGroup,
+            district:this.state.district, 
+            phone_no: this.state.phoneNumber, 
+            pin_code: this.state.pincode, 
+            recovered_on:this.state.recoveredOn, 
+            social_link:this.state.socialLink,
+            social_type:this.state.socialType,
+            state:this.state.state,
+            user_type:"donor"
+        }
         if(!this.state.phoneNumberError && !this.state.recoveredOnError && !this.state.pincodeError && !this.state.nameError){
             this.props.toggleOnboardingModal();
-            this.props.addUserInfo({variables:{_eq:userID,name:this.state.name,blood_group:this.state.bloodGroup,district:this.state.district, phone: this.state.phoneNumber, pin_code: this.state.pincode, recovered_on:this.state.recoveredOn, social_link:this.state.socialLink,social_type:this.state.socialType,state:this.state.state}});
+            this.props.addDonor(
+                {variables:
+                    vars
+                }
+            );
             store.addNotification({
                 title: "Onboarding Successfull",
                 message: `Thank You for providing us your details required. Rest assured your data is safe with us.`,
@@ -128,6 +196,18 @@ export default class ModalOnboarding extends Component{
                                             {this.state.nameError && <p className="text-danger">Please Enter a Name</p>}
                                     </Col>
                                 </Row>
+                                <Row className="mb-2">
+                                    <Col>
+                                    <Label className="text-warning" for="accountType"><h5>Account Type</h5></Label>
+                                        <Input type="select" name="accountType" id="accountType" onChange={(e)=>{this.setState({userType:e.target.value})}} value={this.state.userType} required>
+                                            <option value="">Choose Account Type</option>
+                                            <option value="Donor">Donor</option>
+                                            <option value="Patient">Patient</option>
+                                        </Input>
+                                    </Col>
+                                    {this.state.userTypeError && <p className="text-danger">Please Select Account Type</p>}
+                                </Row>
+
                                 <Row>
                                     <Col md={6} sm={12} className="">
                                         <Label className="text-warning" for="phone"><h5>Phone Number</h5></Label>
@@ -151,32 +231,76 @@ export default class ModalOnboarding extends Component{
                                 </Row>
                             </FormGroup>
                             
-                            <Row>
-                                <Col sm={12} md={4}>
-                                    <FormGroup>
-                                        <Label className="text-warning" for="pincode"><h5>Pincode</h5></Label>
-                                        <Input type="number" name="pincode" id="pincode" placeholder="Enter Pincode" value={this.state.pincode} required />
-                                        {this.state.pincodeError && <p className="text-danger">Please Enter a valid Pincode</p>}
-                                    </FormGroup>
-                                </Col>
-                                <Col sm={12} md={8}>
-                                    <FormGroup>
-                                        <Label className="text-warning" for="recoveredOn"><h5>Recovered On <AiOutlineExclamationCircle size="20px" id="Popover1" onMouseOver={()=>this.props.setIsPopoverOpen(true)} onMouseLeave={()=>this.props.setIsPopoverOpen(false)} /></h5></Label>
-                                        <Input type="date" name="recoveredOn" id="recoveredOn" value={this.state.recoveredOn} required />
-                                        <Popover className="text-danger" placement="bottom" isOpen={this.props.popoverOpen} target="Popover1">
-                                            <PopoverHeader>Who can not donate?</PopoverHeader>
-                                            <PopoverBody>
-                                                <ul>
-                                                    <li> If you have ONLY been vaccinated and have not been infected refrain from registering.</li>
-                                                    <li> If you have never contracted the virus refrain from registering. </li> 
-                                                </ul>
-                                            </PopoverBody>
-                                        </Popover>
-                                        {this.state.recoveredOnError && <p className="text-danger">Please Enter a valid Date</p>}
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-                          
+                            {this.state.userType!==null && this.state.userType!=="" && this.state.userType==="Donor" && 
+                            <div>
+                                <Row>
+                                    <Col sm={12} md={8}>
+                                        <FormGroup>
+                                            <Label className="text-warning" for="pincode"><h5>Pincode</h5></Label>
+                                            <Input type="number" name="pincode" id="pincode" placeholder="Enter Pincode" value={this.state.pincode} required />
+                                            {this.state.pincodeError && <p className="text-danger">Please Enter a valid Pincode</p>}
+                                        </FormGroup>
+                                    </Col>
+                                    
+                                    <Col sm={12} md={8}>
+                                        <FormGroup>
+                                            <Label className="text-warning" for="recoveredOn"><h5>Recovered On <AiOutlineExclamationCircle size="20px" id="Popover1" onMouseOver={()=>this.props.setIsPopoverOpen(true)} onMouseLeave={()=>this.props.setIsPopoverOpen(false)} /></h5></Label>
+                                            <Input type="date" name="recoveredOn" id="recoveredOn" value={this.state.recoveredOn} required />
+                                            <Popover className="text-danger" placement="bottom" isOpen={this.props.popoverOpen} target="Popover1">
+                                                <PopoverHeader>Who can not donate?</PopoverHeader>
+                                                <PopoverBody>
+                                                    <ul>
+                                                        <li> If you have ONLY been vaccinated and have not been infected refrain from registering.</li>
+                                                        <li> If you have never contracted the virus refrain from registering as a donor. </li> 
+                                                    </ul>
+                                                </PopoverBody>
+                                            </Popover>
+                                            {this.state.recoveredOnError && <p className="text-danger">Please Enter a valid Date</p>}
+                                        </FormGroup>
+                                    </Col>
+                                                            
+                                </Row>
+                            </div>
+                            }          
+
+                            {this.state.userType!==null && this.state.userType!=="" && this.state.userType==="Patient" &&
+                            <div>
+                                
+                                <Row>
+                                    <Col sm={12} md={6}>
+                                        <FormGroup>
+                                            <Label className="text-warning" for="hospitalName"><h5>Hospital Name <AiOutlineExclamationCircle size="20px" id="Popover1" onMouseOver={()=>this.setHospitalNamePopover(true)} onMouseLeave={()=>this.setHospitalNamePopover(false)} /></h5></Label>
+                                            <Input type="text" name="hospitalName" id="hospitalName" value={this.state.hospitalName} placeholder="Hospital Name" />
+                                            <Popover placement="bottom" isOpen={this.state.ishospitalNamePopoverOpen} target="Popover1">
+                                                <PopoverHeader>Caution</PopoverHeader>
+                                                <PopoverBody>Please Enter Hospital Details Carefully as this will be seen by the donor while deciding to accept this request</PopoverBody>
+                                            </Popover>
+                                            {this.state.hospitalNameError && <p className="text-danger">Please Enter Hospital Name</p>}
+                                        </FormGroup>
+                                    </Col>
+                                    <Col sm={12} md={6}>
+                                        <FormGroup>
+                                            <Label className="text-warning" for="hospitalPincode"><h5>Hospital Pincode</h5></Label>
+                                            <Input type="number" name="hospitalPincode" id="hospitalPincode" value={this.state.hospitalPincode} placeholder="Enter Hospital Pincode" />
+                                            {this.state.hospitalPincodeError && <p className="text-danger">Please Enter a valid Pincode</p>}
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
+
+                                <Row>
+                                    <Col sm={12}>
+                                        <FormGroup>
+                                            <Label for="hospitalAddress" className="text-warning"><h5>Hospital Address</h5></Label>
+                                            <Input type="textarea" name="hospitalAddress" id="hospitalAddress" placeholder="Enter Detailed Hospital Address"  />
+                                            {this.state.hospitalAddressError && <p className="text-danger">Please Enter detailed hospital address</p>}
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
+
+                            </div>
+                            }
+
+                            
                             <Row>
                                 <Col sm={12} md={6}>
                                     <FormGroup>

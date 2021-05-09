@@ -60,6 +60,15 @@ export const ADD_USER_INFO = gql`mutation AddUserInfo($_eq: String = "",$name: S
   }
 }`
 
+export const INSERT_DONOR =gql`mutation InsertDonor($status:String!,$phone_no: String!, $recovered_on: date, $user_id: String!, $name: String!, $pin_code: String!, $social_link: String="", $social_type: String="", $user_type: String!, $blood_group: String!, $district: String!, $state: String! ) {
+  update_users(where: {user_id: {_eq: $user_id}}, _set: {name: $name, pin_code: $pin_code, social_link: $social_link, social_type: $social_type, status: $status, user_type: $user_type, recovered_on: $recovered_on, blood_group: $blood_group, district: $district, state: $state}) {
+    affected_rows
+  }
+  insert_donors(objects: {user_id: $user_id, recovered_on: $recovered_on, phone_no: $phone_no}) {
+    affected_rows
+  }
+}
+`
 
 export const DEACTIVATE_USER = gql`mutation DeactivateUser($user_id: String!) {
     update_users(where: {user_id: {_eq: $user_id}}, _set: {status: "onboarding"}) {
