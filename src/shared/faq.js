@@ -8,7 +8,7 @@ const faqs =  [
   {
     "id" : 2,
     "question":"Who can donate plasma?",
-    "answer":"People who have fully recovered from COVID-19 for atleast 2 weeks are encouraged to donate plasma.The person must be greater than 18 years of age."
+    "answer":"People who have fully recovered from COVID-19 for atleast 4 weeks are encouraged to donate plasma.The person must be greater than 18 years of age."
   },
   {
     "id" : 3,
@@ -29,6 +29,16 @@ const faqs =  [
     "id" : 6,
     "question":"What should I know before plasma donation?",
     "answer":"You will be screened for diseases like HIV and hepatitis. The whole process might take around 2-3 hours."
+  },
+  {
+    "id" : 7,
+    "question":"Is there a possibility that I can get re-infected with covid-19 if i donate my plasma?",
+    "answer":"No, in most cases you don't get re-infected with covid within 4 to 6 months of recovery. But still your condition will be evaluated by the doctor before you donate plasma."
+  },
+  {
+    "id" : 8,
+    "question":"Why should you trust us?",
+    "answer":"We just connect patients admitted in hospitals with the donors, essentially acting as a means of communication. You will be connected to the patients directly and speak to their doctor and will be evaluated rigourously for safety and compatibility."
   }
   
 ]
