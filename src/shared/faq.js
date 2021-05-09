@@ -18,7 +18,7 @@ const faqs =  [
   {
     "id" : 4,
     "question":"Who is benefited?",
-    "answer":`People with moderate COVID-19 disease can retirive plasma, it has shown to reduce the risk of needing a ventilator(O2 therapy) and mortality. It can be tried in severe & critical COVID-19 patients also. Research is still going on (Visit www.who.int for more info).`
+    "answer":`People with moderate COVID-19 disease can retirive plasma, it has shown to reduce the risk of needing a ventilator(O2 therapy) and mortality. It can be tried in severe & critical COVID-19 patients also. Research is still going on.<br><br>References & relatd articles:<br><ul><li><a href="https://www.bmstindia.org/donate-blood/">Visit BMST!</a></li><li><a href="http://nbtc.naco.gov.in/page/eligibility/%22">Visit NBTC!</a></li><li><a href="https://www.who.int/health-topics/blood-products#tab=tab_1">Visit WHO!</a></li></ul>`
   },
   {
     "id" : 5,

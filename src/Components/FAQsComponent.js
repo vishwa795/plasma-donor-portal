@@ -1,5 +1,6 @@
 import React from 'react';
 import {Container} from 'reactstrap';
+import parse from 'html-react-parser'
 
 import faq from '../shared/faq.js'
 
@@ -20,7 +21,7 @@ const RenderCards = (props) =>{
                         A.
                     </h1>
                     <span className='d-inline'>
-                        <h6 className="d-inline">{qa.answer}</h6>
+                        <h6 className="d-inline">{parse(qa.answer)}</h6>
                     </span>
                 </div>
             </Container>
