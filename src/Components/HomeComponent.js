@@ -170,11 +170,10 @@ function Home(props){
 
     // sometimes auth0 has a delay to populate usertable and hence query may return empty user array
     // hence we set default status to onboarding, if user isnt logged in then accesstoken wont be availabe for a db query
-    if (userStatus.users.length === 0 ){
+    if (userStatus && userStatus.users.length === 0 ){
         console.log("user not found , defaulting to onboarding...")
-        userStatus = {
-            status:"onboarding"
-        }
+        userStatus ={}
+        userStatus.users = [{status:"onboarding"}]
     }
     
     return(
