@@ -77,7 +77,7 @@ const RenderCards = ({blood,state,toggleRequestModal,setRequestModalDonor}) =>{
                         </CardBody>
                         <CardFooter>
                             <div className="text-center text-muted">
-                                Recovered/Vaccinated on: {donor.recovered_on}
+                                Recovered on: {donor.recovered_on}
                             </div>
                         </CardFooter>
                     </Card>
